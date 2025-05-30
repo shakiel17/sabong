@@ -10,16 +10,16 @@
     <title>Online Bet</title>
 
     <!-- Bootstrap -->
-    <link href="<?=base_url('design/vendors/bootstrap/dist/css/bootstrap.min.css');?>" rel="stylesheet">
+    <link href="<?=base_url('design/assets/vendors/bootstrap/dist/css/bootstrap.min.css');?>" rel="stylesheet">
     <!-- Font Awesome -->
-    <link href="<?=base_url('design/vendors/font-awesome/css/font-awesome.min.css');?>" rel="stylesheet">
+    <link href="<?=base_url('design/assets/vendors/font-awesome/css/font-awesome.min.css');?>" rel="stylesheet">
     <!-- NProgress -->
-    <link href="<?=base_url('design/vendors/nprogress/nprogress.css');?>" rel="stylesheet">
+    <link href="<?=base_url('design/assets/vendors/nprogress/nprogress.css');?>" rel="stylesheet">
     <!-- Animate.css -->
-    <link href="<?=base_url('design/vendors/animate.css/animate.min.css');?>" rel="stylesheet">
+    <link href="<?=base_url('design/assets/vendors/animate.css/animate.min.css');?>" rel="stylesheet">
 
     <!-- Custom Theme Style -->
-    <link href="<?=base_url('design/build/css/custom.min.css');?>" rel="stylesheet">
+    <link href="<?=base_url('design/assets/build/css/custom.min.css');?>" rel="stylesheet">
   </head>
 
   <body class="login">
@@ -30,17 +30,16 @@
       <div class="login_wrapper">
         <div class="animate form login_form">
           <section class="login_content">
-            <form>
+            <form action="<?=base_url('authenticate');?>" method="POST">
               <h1>Login Form</h1>
               <div>
-                <input type="text" class="form-control" placeholder="Username" required="" />
+                <input type="text" name="username" class="form-control" placeholder="Username" required="" autocomplete="off" />
               </div>
               <div>
-                <input type="password" class="form-control" placeholder="Password" required="" />
+                <input type="password" name="password" class="form-control" placeholder="Password" required="" />
               </div>
               <div>
-                <a class="btn btn-default submit" href="index.html">Log in</a>
-                <a class="reset_pass" href="#">Lost your password?</a>
+                <button type="submit" class="btn btn-default submit">Log in</button>                
               </div>
 
               <div class="clearfix"></div>
@@ -53,10 +52,10 @@
                 <div class="clearfix"></div>
                 <br />
 
-                <div>
+                <!-- <div>
                   <h1><i class="fa fa-paw"></i> Gentelella Alela!</h1>
                   <p>©2016 All Rights Reserved. Gentelella Alela! is a Bootstrap 4 template. Privacy and Terms</p>
-                </div>
+                </div> -->
               </div>
             </form>
           </section>
@@ -64,19 +63,19 @@
 
         <div id="register" class="animate form registration_form">
           <section class="login_content">
-            <form>
+            <form action="<?=base_url('registration');?>" method="POST">
               <h1>Create Account</h1>
               <div>
-                <input type="text" class="form-control" placeholder="Username" required="" />
+                <input type="text" name="fullname" class="form-control" placeholder="Full Name" required autocomplete="off"/>
               </div>
               <div>
-                <input type="email" class="form-control" placeholder="Email" required="" />
+                <input type="text" name="username" class="form-control" placeholder="Username" required  autocomplete="off" />
               </div>
               <div>
-                <input type="password" class="form-control" placeholder="Password" required="" />
+                <input type="password" name="password" class="form-control" placeholder="Password" required />
               </div>
               <div>
-                <a class="btn btn-default submit" href="index.html">Submit</a>
+                <button type="submit" class="btn btn-default submit">Submit</button>
               </div>
 
               <div class="clearfix"></div>
@@ -89,10 +88,10 @@
                 <div class="clearfix"></div>
                 <br />
 
-                <div>
+                <!-- <div>
                   <h1><i class="fa fa-paw"></i> Gentelella Alela!</h1>
                   <p>©2016 All Rights Reserved. Gentelella Alela! is a Bootstrap 4 template. Privacy and Terms</p>
-                </div>
+                </div> -->
               </div>
             </form>
           </section>
