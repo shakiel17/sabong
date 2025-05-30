@@ -41,14 +41,26 @@
               <div>
                 <button type="submit" class="btn btn-default submit">Log in</button>                
               </div>
-
+              <?php
+              if($this->session->error){
+              ?>
+              <div class="alert alert-danger"><?=$this->session->error;?></div>
+              <?php
+              }
+              ?>
+              <?php
+              if($this->session->success){
+              ?>
+              <div class="alert alert-success"><?=$this->session->success;?></div>
+              <?php
+              }
+              ?>
               <div class="clearfix"></div>
 
               <div class="separator">
                 <p class="change_link">New to site?
                   <a href="#signup" class="to_register"> Create Account </a>
                 </p>
-
                 <div class="clearfix"></div>
                 <br />
 
