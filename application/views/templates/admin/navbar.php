@@ -17,25 +17,8 @@
                           <span>Settings</span>
                         </a>
                     <a class="dropdown-item"  href="javascript:;">Help</a>
-                      <a class="dropdown-item"  href="<?=base_url('logout');?>"><i class="fa fa-sign-out pull-right"></i> Log Out</a>
+                      <a class="dropdown-item"  href="<?=base_url('admin_logout');?>"><i class="fa fa-sign-out pull-right"></i> Log Out</a>
                     </div>
-                  </li>
-                  <?php                 
-                    $acct=$this->Sabong_model->getCustomerAccount($this->session->customer_id);                 
-                  ?>                                 
-                  <li role="presentation" class="nav-item dropdown open">
-                    <a href="javascript:;" class="info-number">
-                      <i class="fa fa-rub"></i> <?=number_format($acct['amount'],2);?>
-                    </a>
-                    <a href="" class="info-number" title="Refresh">
-                      <i class="fa fa-refresh"></i>                      
-                    </a>
-                    <a href="<?=base_url('deposit');?>" class="info-number" title="Deposit">
-                      <i class="fa fa-credit-card"></i>                      
-                    </a>
-                    <a href="<?=base_url('withdraw');?>" class="info-number" title="Withdraw">
-                      <i class="fa fa-database"></i>                      
-                    </a>                    
                   </li>
                 </ul>
               </nav>

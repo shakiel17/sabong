@@ -49,6 +49,22 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | Examples:	my-controller/index	-> my_controller/index
 |		my-controller/my-method	-> my_controller/my_method
 */
+$route['cancel_withdrawal/(:any)'] = 'pages/cancel_withdrawal/$1';
+$route['approve_withdrawal/(:any)'] = 'pages/approve_withdrawal/$1';
+$route['manage_withdrawal'] = 'pages/manage_withdrawal';
+$route['cancel_deposit/(:any)'] = 'pages/cancel_deposit/$1';
+$route['approve_deposit/(:any)'] = 'pages/approve_deposit/$1';
+$route['manage_deposit'] = 'pages/manage_deposit';
+$route['admin_logout'] = 'pages/admin_logout';
+$route['adminmain'] = 'pages/adminmain';
+$route['admin_authenticate'] = 'pages/admin_authenticate';
+$route['admin'] = 'pages/admin';
+$route['withdraw_history'] = 'pages/withdraw_history';
+$route['save_withdraw'] = 'pages/save_withdraw';
+$route['withdraw'] = 'pages/withdraw';
+$route['deposit_history'] = 'pages/deposit_history';
+$route['save_deposit'] = 'pages/save_deposit';
+$route['deposit'] = 'pages/deposit';
 $route['main'] = 'pages/main';
 $route['logout'] = 'pages/logout';
 $route['registration'] = 'pages/registration';
