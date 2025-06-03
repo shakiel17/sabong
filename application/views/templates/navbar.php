@@ -27,9 +27,9 @@
                     <a href="javascript:;" class="info-number">
                       <i class="fa fa-rub"></i> <?=number_format($acct['amount'],2);?>
                     </a>
-                    <a href="" class="info-number" title="Refresh">
+                    <!-- <a href="" class="info-number" title="Refresh">
                       <i class="fa fa-refresh"></i>                      
-                    </a>
+                    </a> -->
                     <a href="<?=base_url('deposit');?>" class="info-number" title="Deposit">
                       <i class="fa fa-credit-card"></i>                      
                     </a>

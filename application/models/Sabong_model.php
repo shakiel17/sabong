@@ -4,6 +4,8 @@
         public function __construct(){
             $this->load->database();
         }
+
+        //===================================STart of Login/Register Model==================================
         public function authenticate($username,$password){
             $result=$this->db->query("SELECT * FROM customer WHERE username='$username' AND `password`='$password'");
             if($result->num_rows()>0){
@@ -31,6 +33,29 @@
                 }
             }
         }
+
+        public function admin_authenticate($username,$password){
+            $result=$this->db->query("SELECT * FROM admin WHERE username='$username' AND `password`='$password'");
+            if($result->num_rows()>0){
+                return $result->row_array();
+            }else{
+                return false;
+            }
+        }
+        //===================================End of Login/Register Model==================================
+        
+//====================================================================================================================================================================
+
+        //==================================Start of Getting Data Model=================================================
+        public function getCustomerAccount($id){
+            $result=$this->db->query("SELECT * FROM customer_account WHERE customer_id='$id'");
+            return $result->row_array();
+        }
+        //==================================End of Getting Data Model=================================================
+        
+//====================================================================================================================================================================
+
+        //=======================================Start of Cash In/Out Model==============================================
         public function save_deposit(){
             $refno="DRN".date('YmdHis');
             $id=$this->session->customer_id;
@@ -48,21 +73,6 @@
             $result=$this->db->query("SELECT * FROM cash_in WHERE customer_id='$id' ORDER BY datearray DESC, timearray DESC");
             return $result->result_array();
         }
-
-        public function getCustomerAccount($id){
-            $result=$this->db->query("SELECT * FROM customer_account WHERE customer_id='$id'");
-            return $result->row_array();
-        }
-
-        public function admin_authenticate($username,$password){
-            $result=$this->db->query("SELECT * FROM admin WHERE username='$username' AND `password`='$password'");
-            if($result->num_rows()>0){
-                return $result->row_array();
-            }else{
-                return false;
-            }
-        }
-
         public function getAllDepositRequest(){
             $result=$this->db->query("SELECT ci.*,c.fullname FROM cash_in ci INNER JOIN customer c ON c.customer_id=ci.customer_id WHERE ci.`status`='pending' ORDER BY ci.datearray ASC, ci.timearray ASC");
             return $result->result_array();
@@ -154,6 +164,11 @@
             $result=$this->db->query("SELECT ci.*,c.fullname FROM cash_out ci INNER JOIN customer c ON c.customer_id=ci.customer_id WHERE ci.`status`='pending' ORDER BY ci.datearray ASC, ci.timearray ASC");
             return $result->result_array();
         }
+        //=======================================End of Cash In/Out Model==============================================
+
+//====================================================================================================================================================================
+
+        //=================================Start of Auto Refresh Model==========================================
         public function fetchCustomerAccount($id){
             $result=$this->db->query("SELECT * FROM customer_account WHERE customer_id='$id'");
             return $result->result_array();
@@ -167,6 +182,25 @@
         public function fetchWithdrawRequest(){
             $result=$this->db->query("SELECT COUNT(ci.customer_id) as totalcount FROM cash_out ci WHERE ci.`status`='pending' ORDER BY ci.datearray ASC, ci.timearray ASC");
             return $result->result_array();
+        }        
+        //=================================End of Auto Refresh Model==========================================
+
+//====================================================================================================================================================================
+
+        //=================================Start of Fight Model===============================================
+        public function getAllFightByDate($date){
+            $result=$this->db->query("SELECT * FROM fight wHERE datearray='$date' ORDER BY fight_no ASC");
+            return $result->result_array();
         }
+
+        public function getActiveFight(){
+            $result=$this->db->query("SELECT * FROM fight WHERE `status`='open'");
+            return $result->row_array();
+        }
+        public function getFightDetailsBySide($side,$fightno){
+            $result=$this->db->query("SELECT * FROM fight_details WHERE bet_side='$side' AND fight_no='$fightno'");
+            return $result->result_array();
+        }
+        //=================================End of Fight Model===============================================
     }
 ?>

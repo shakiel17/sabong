@@ -49,6 +49,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | Examples:	my-controller/index	-> my_controller/index
 |		my-controller/my-method	-> my_controller/my_method
 */
+//========================Admin Route==============================
+$route['active_fight'] = 'pages/active_fight';
+$route['fight_list'] = 'pages/fight_list';
 $route['cancel_withdrawal/(:any)'] = 'pages/cancel_withdrawal/$1';
 $route['approve_withdrawal/(:any)'] = 'pages/approve_withdrawal/$1';
 $route['manage_withdrawal'] = 'pages/manage_withdrawal';
@@ -59,6 +62,7 @@ $route['admin_logout'] = 'pages/admin_logout';
 $route['adminmain'] = 'pages/adminmain';
 $route['admin_authenticate'] = 'pages/admin_authenticate';
 $route['admin'] = 'pages/admin';
+//=========================User Route============================
 $route['withdraw_history'] = 'pages/withdraw_history';
 $route['save_withdraw'] = 'pages/save_withdraw';
 $route['withdraw'] = 'pages/withdraw';

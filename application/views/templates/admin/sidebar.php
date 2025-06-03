@@ -32,8 +32,8 @@
                   </li>
                   <li><a><i class="fa fa-gamepad"></i> Fights <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
-                      <li><a href="form.html">Fight List</a></li>
-                      <li><a href="form_advanced.html">Active Fight</a></li>                      
+                      <li><a href="<?=base_url('fight_list');?>">Fight List</a></li>
+                      <li><a href="<?=base_url('active_fight');?>">Active Fight</a></li>                      
                     </ul>
                   </li>
                   <li><a><i class="fa fa-money"></i> Cash Flow <span class="fa fa-chevron-down"></span></a>

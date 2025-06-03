@@ -307,6 +307,25 @@
             }
             redirect(base_url('manage_withdrawal'));
         }
+        public function fight_list(){
+            $page = "fight_list";
+            if(!file_exists(APPPATH.'views/pages/admin/'.$page.".php")){
+                show_404();
+            }
+            if($this->session->admin_login){                
+            }else{
+                redirect(base_url('admin'));
+            }
+            $date=date('Y-m-d');
+            $data['title'] = "Fight Manager";
+            $data['items'] = $this->Sabong_model->getAllFightByDate($date);
+            $this->load->view('templates/header');
+            $this->load->view('templates/admin/sidebar');
+            $this->load->view('templates/admin/navbar');
+            $this->load->view('pages/admin/'.$page,$data);
+            $this->load->view('templates/modal');
+            $this->load->view('templates/footer');
+        }
         //=====================================Admin Module==========================================
     }
 ?>
