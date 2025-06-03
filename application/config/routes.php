@@ -51,6 +51,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 */
 //========================Admin Route==============================
 $route['active_fight'] = 'pages/active_fight';
+$route['create_fight'] = 'pages/create_fight';
 $route['fight_list'] = 'pages/fight_list';
 $route['cancel_withdrawal/(:any)'] = 'pages/cancel_withdrawal/$1';
 $route['approve_withdrawal/(:any)'] = 'pages/approve_withdrawal/$1';

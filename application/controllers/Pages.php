@@ -326,6 +326,34 @@
             $this->load->view('templates/modal');
             $this->load->view('templates/footer');
         }
+
+        public function create_fight(){
+            $approve=$this->Sabong_model->create_fight();
+            if($approve){
+                $this->session->set_flashdata('success','Fight successfully created!');
+            }else{
+                $this->session->set_flashdata('failed','Fight cannot be created!');
+            }
+            redirect(base_url('fight_list'));
+        }
+        public function active_fight(){
+            $page = "active_fight";
+            if(!file_exists(APPPATH.'views/pages/admin/'.$page.".php")){
+                show_404();
+            }
+            if($this->session->admin_login){                
+            }else{
+                redirect(base_url('admin'));
+            }
+            $date=date('Y-m-d');            
+            $data['fight'] = $this->Sabong_model->getActiveFight($date);
+            $this->load->view('templates/header');
+            $this->load->view('templates/admin/sidebar');
+            $this->load->view('templates/admin/navbar');
+            $this->load->view('pages/admin/'.$page,$data);
+            $this->load->view('templates/modal');
+            $this->load->view('templates/footer');
+        }
         //=====================================Admin Module==========================================
     }
 ?>

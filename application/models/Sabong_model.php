@@ -193,13 +193,39 @@
             return $result->result_array();
         }
 
-        public function getActiveFight(){
-            $result=$this->db->query("SELECT * FROM fight WHERE `status`='open'");
+        public function getActiveFight($date){
+            $result=$this->db->query("SELECT * FROM fight WHERE (`status`='open' OR `status`='close') AND datearray='$date'");
             return $result->row_array();
         }
         public function getFightDetailsBySide($side,$fightno){
             $result=$this->db->query("SELECT * FROM fight_details WHERE bet_side='$side' AND fight_no='$fightno'");
             return $result->result_array();
+        }
+        
+        public function create_fight(){
+            $date=date('Y-m-d');
+            $time=date('H:i:s');
+            $fight_no=1;            
+            $query=$this->db->query("SELECT fight_no FROM fight ORDER BY fight_no DESC LIMIT 1");
+            if($query->num_rows()>0){
+                $res=$query->row_array();
+                $fight_no=$res['fight_no'] + 1;                
+            }
+
+            $result=$this->db->query("INSERT INTO fight(`fight_no`,`odds_meron`,`odds_wala`,`datearray`,`timearray`) VALUES('$fight_no','0','0','$date','$time')");
+            if($result){                              
+                return true;
+            }else{
+                return false;
+            }
+        }
+        public function check_fight(){
+            $result=$this->db->query("SELECT * FROM fight WHERE `status`='open' OR `status`='close'");
+            if($result->num_rows() > 0){
+                return true;
+            }else{
+                return false;
+            }
         }
         //=================================End of Fight Model===============================================
     }

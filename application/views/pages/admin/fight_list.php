@@ -1,28 +1,4 @@
- <!-- page content -->
-  <!-- <script>
-    function depositRefresh(){
-          <?php
-          $deposit=$this->Sabong_model->getAllDepositRequest();
-          $this->session->set_userdata('depositcount',count($deposit));          
-          ?>
-          var prev_val = '<?=$this->session->depositcount;?>';        
-        $.ajax({
-          url:'<?=base_url();?>index.php/pages/fetchDepositRequest',
-          type:'post',          
-          dataType:'json',
-          success: function(response){
-            if(prev_val !== response[0]['totalcount']){
-              window.location = window.location.href;
-            }else{            
-              //alert(response[0]['totalcount']);
-            }           
-            //alert(prev_[0]['amount']);
-          }
-        });
-        }
-        setInterval('depositRefresh()', 3000);
-        
-    </script> -->
+ <!-- page content --> 
         <div class="right_col" role="main">
           <div class="">
             <div class="page-title">
@@ -44,14 +20,26 @@
             ?>
                 <div class="alert alert-danger"><?=$this->session->failed;?></div>
             <?php
+            }            
+            ?>
+
+            <?php
+            $check=$this->Sabong_model->check_fight();
+            if($check){
+              $view="style='display:none;'";
+            }else{
+              $view="";
             }
             ?>
             <div class="row">
               <div class="col-md-12 col-sm-12 ">
                 <div class="x_panel">
                   <div class="x_title">
-                    <h2>List of Fights</h2>                    
-                    <div class="clearfix"></div>
+                    <h2>List of Fights</h2>     
+                    <ul class="nav navbar-right panel_toolbox">
+                      <li><a href="<?=base_url('create_fight');?>" class="btn btn-primary btn-sm text-white btn-round" onclick="return confirm('Do you wish to create new fight?'); return false;" <?=$view;?>><i class="fa fa-plus"></i> New Fight</a></li>                                          
+                    </ul>               
+                    <div class="clearfix"></div>                    
                   </div>
                   <div class="x_content">
                       <div class="row">
@@ -71,15 +59,34 @@
                         <?php
                         
                         foreach($items as $item){
+                            $query=$this->Sabong_model->getFightDetailsBySide('meron',$item['fight_no']);
+                            $meron=0;
+                            foreach($query as $row){
+                              $meron += $row['amount'];
+                            }
+                            $query=$this->Sabong_model->getFightDetailsBySide('wala',$item['fight_no']);
+                            $wala=0;
+                            foreach($query as $row){
+                              $wala += $row['amount'];
+                            }
                             echo "<tr>";
                                 echo "<td>#$item[fight_no]</td>";
-                                echo "<td>$item[fullname]</td>";
-                                echo "<td>$item[refno]</td>";
-                                echo "<td align='right'>".number_format($item['amount'],2)."</td>";
+                                echo "<td align='right'>".number_format($meron,2)."</td>";
+                                echo "<td align='right'>".number_format($wala,2)."</td>";
+                                echo "<td align='center'>$item[status]</td>";
                                 ?>
-                                <td width="20%">
-                                    <a href="<?=base_url('approve_deposit/'.$item['refno']);?>" class="btn btn-success" onclick="return confirm('Do you wish to approve this deposit request?'); return false;">Approved</a>
-                                    <a href="<?=base_url('cancel_deposit/'.$item['refno']);?>" class="btn btn-danger" onclick="return confirm('Do you wish to cancel this deposit request?'); return false;">Cancel</a>
+                                <td width="20%" align="center">
+                                    <?php
+                                    if($item['status']=="open"){
+                                      ?>
+                                      <a href="<?=base_url('active_fight');?>" class="btn btn-primary btn-round btn-sm"><i class="fa fa-eye"></i> View Details</a>
+                                      <?php
+                                    }else{
+                                      ?>
+                                      <a href="<?=base_url('fight_details/'.$item['fight_no']);?>" class="btn btn-primary btn-round btn-sm"><i class="fa fa-eye"></i> View Details</a>
+                                      <?php
+                                    }
+                                    ?>                                    
                                 </td>
                                 <?php
                             echo "</tr>";
