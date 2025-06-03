@@ -434,6 +434,36 @@
             }
             redirect(base_url('fight_list'));
         }
+        public function income(){
+             $page = "income";
+            if(!file_exists(APPPATH.'views/pages/admin/'.$page.".php")){
+                show_404();
+            }
+            if($this->session->admin_login){                
+            }else{
+                redirect(base_url('admin'));
+            }                        
+            $this->load->view('templates/header');
+            $this->load->view('templates/admin/sidebar');
+            $this->load->view('templates/admin/navbar');
+            $this->load->view('pages/admin/'.$page);
+            $this->load->view('templates/modal');
+            $this->load->view('templates/footer');
+        }
+        public function print_income(){
+             $page = "print_income";
+            if(!file_exists(APPPATH.'views/pages/admin/'.$page.".php")){
+                show_404();
+            }
+            if($this->session->admin_login){                
+            }else{
+                redirect(base_url('admin'));
+            }             
+            $date=$this->input->post('datearray');
+            $data['rundate'] = $date;
+            $data['items'] = $this->Sabong_model->getAllFightResult($date);            
+            $this->load->view('pages/admin/'.$page,$data);            
+        }
         //=====================================Admin Module==========================================
     }
 ?>

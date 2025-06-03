@@ -55,6 +55,14 @@
             $result=$this->db->query("SELECT fd.*,SUM(fd.amount) as betamount,fr.win_result FROM fight_details fd INNER JOIN fight_result fr ON fr.fight_no=fd.fight_no WHERE fd.customer_id='$id' AND fd.datearray='$date' GROUP BY fd.fight_no,fd.bet_side ORDER BY fd.fight_no DESC");
             return $result->result_array();
         }
+        public function getFightResult($fight_no,$date){
+            $result=$this->db->query("SELECT * FROM fight_result WHERE fight_no='$fight_no' AND datearray='$date'");
+            return $result->row_array();
+        }
+        public function getAllFightResult($date){
+            $result=$this->db->query("SELECT * FROM fight_result WHERE datearray='$date' ORDER BY fight_no ASC");
+            return $result->result_array();
+        }
         //==================================End of Getting Data Model=================================================
         
 //====================================================================================================================================================================

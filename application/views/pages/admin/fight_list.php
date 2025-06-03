@@ -35,7 +35,7 @@
               <div class="col-md-12 col-sm-12 ">
                 <div class="x_panel">
                   <div class="x_title">
-                    <h2>List of Fights</h2>     
+                    <h2>List of Fights <small><?=date('M d, Y');?></small></h2>     
                     <ul class="nav navbar-right panel_toolbox">
                       <li><a href="<?=base_url('create_fight');?>" class="btn btn-primary btn-sm text-white btn-round" onclick="return confirm('Do you wish to create new fight?'); return false;" <?=$view;?>><i class="fa fa-plus"></i> New Fight</a></li>                                          
                     </ul>               
@@ -52,7 +52,7 @@
                           <th>Meron</th>
                           <th>Wala</th>
                           <th>Status</th>
-                          <th>Action</th>                          
+                          <th>Result</th>                          
                         </tr>
                       </thead>                      
                       <tbody>
@@ -69,6 +69,7 @@
                             foreach($query as $row){
                               $wala += $row['amount'];
                             }
+                            $fres=$this->Sabong_model->getFightResult($item['fight_no'],date('Y-m-d'));
                             echo "<tr>";
                                 echo "<td>#$item[fight_no]</td>";
                                 echo "<td align='right'>".number_format($meron,2)."</td>";
@@ -76,17 +77,7 @@
                                 echo "<td align='center'>$item[status]</td>";
                                 ?>
                                 <td width="20%" align="center">
-                                    <?php
-                                    if($item['status']=="open"){
-                                      ?>
-                                      <a href="<?=base_url('active_fight');?>" class="btn btn-primary btn-round btn-sm"><i class="fa fa-eye"></i> View Details</a>
-                                      <?php
-                                    }else{
-                                      ?>
-                                      <a href="<?=base_url('fight_details/'.$item['fight_no']);?>" class="btn btn-primary btn-round btn-sm"><i class="fa fa-eye"></i> View Details</a>
-                                      <?php
-                                    }
-                                    ?>                                    
+                                  <?=$fres['win_result'];?>
                                 </td>
                                 <?php
                             echo "</tr>";

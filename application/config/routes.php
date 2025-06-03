@@ -50,6 +50,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 |		my-controller/my-method	-> my_controller/my_method
 */
 //========================Admin Route==============================
+$route['print_income'] = 'pages/print_income';
+$route['income'] = 'pages/income';
 $route['fight_result/(:any)/(:any)'] = 'pages/fight_result/$1/$2';
 $route['close_betting/(:any)'] = 'pages/close_betting/$1';
 $route['active_fight'] = 'pages/active_fight';

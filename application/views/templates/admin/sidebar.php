@@ -44,13 +44,13 @@
                   </li>
                   <li><a><i class="fa fa-file-text-o"></i> Reports <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
-                      <li><a href="tables.html">Income</a></li>                      
+                      <li><a href="<?=base_url('income');?>">Income</a></li>                      
                     </ul>
                   </li>
                   <li><a><i class="fa fa-cogs"></i> Settings <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
-                      <li><a href="chartjs.html">User Account</a></li>
-                      <li><a href="chartjs2.html">User List</a></li>                      
+                      <li><a href="<?=base_url('user_account');?>">User Account</a></li>
+                      <li><a href="<?=base_url('user_list');?>">User List</a></li>                      
                     </ul>
                   </li>                  
                 </ul>

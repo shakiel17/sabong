@@ -1,25 +1,53 @@
 <!-- page content -->
 			<div class="right_col" role="main">
 				<div class="">
-					<div class="page-title">
-						<div class="title_left">
-							<h3><?=$title;?></h3>
-                            <h4><a href="<?=base_url('main');?>"><i class="fa fa-arrow-left"></i> Back</a></h4>
-						</div>						
+					<div class="row">
+					    <div class="col-lg-6 col-md-12 col-sm-12">
+						    <div class="title_left">
+							    <h4><?=$title;?></h4>
+                                <h4><a href="<?=base_url('main');?>"><i class="fa fa-arrow-left"></i> Back</a></h4>
+						    </div>						
+                        </div>
 					</div>
 					<div class="clearfix"></div>					
 					<div class="row">
 						<div class="col-lg-6 col-md-12 col-sm-12">
 							<div class="x_panel">
-								<div >
-									<h2>Betting Details</h2>									
-									<div class="clearfix"></div>
+								<div class="x_title">
+									<h2>Betting Details</h2>
+                                    <div>
+                                        <form action="<?=base_url('search_bet_history');?>" method="POST">
+                                        <table width="100%" border="0">
+                                            <tr>
+                                                <td>                                                    
+                                                    <input type="date" name="datearray" class="form-control" value="<?=date('Y-m-d');?>">
+                                                </td>
+                                                <td>
+                                                    <input type="submit" class="btn btn-primary" value="Search">
+                                                </td>
+                                            </tr>
+                                        </table>	
+                                        </form>
+                                    </div>                                    								
+									<div class="clearfix"></div>                                    
 								</div>
 								<div class="x_content">						   
                                     <table class="table" style="font-size:14px;">
                                         <?php
                                         $totaldeposit=0;
-                                        foreach($items as $item){
+                                        foreach($items as $item){   
+                                                $query=$this->Sabong_model->db->query("SELECT * FROM fight WHERE fight_no='$item[fight_no]' AND datearray='$item[datearray]'");
+                                                $row=$query->row_array(); 
+                                            if($item['bet_side']==$item['win_result']){                                                
+                                                if($item['win_result']=="meron"){
+                                                    $totaldeposit += $item['betamount']*$row['odds_meron']-$item['betamount'];
+                                                }else if($item['win_result']=="wala"){
+                                                    $totaldeposit += $item['betamount']*$row['odds_wala']-$item['betamount'];
+                                                }else{
+                                                    
+                                                }
+                                                
+                                            }                                        
                                             // if($item['status']=="pending" || $item['status']=="cancelled"){
                                             //     $color="red";
                                             //     $amount="";
@@ -42,8 +70,29 @@
                                             <td colspan="2">Valid Bet: <?=$item['betamount'];?></td>
                                         </tr>
                                         <tr>
-                                            <td>Win/Loss: <?=$item['betamount'];?></td>
-                                            <td colspan="2">Valid Bet: <?=$item['betamount'];?></td>
+                                            <td>Win/Loss: 
+                                                <?php
+                                                if($item['bet_side']==$item['win_result']){
+                                                    echo "<b style='color:green;'>Win</b>";
+                                                }else{
+                                                    echo "<b style='color:red;'>Loss</b>";
+                                                }
+                                                ?>
+                                            </td>
+                                            <td colspan="2">Winnings: 
+                                                <?php
+                                                if($item['bet_side']==$item['win_result']){
+                                                    if($item['win_result']=="meron"){
+                                                        echo "<b style='color:green;'>".$item['betamount']*$row['odds_meron']-$item['betamount']."</b>";
+                                                    }else if($item['win_result']=="wala"){
+                                                        echo "<b style='color:green;'>".$item['betamount']*$row['odds_wala']-$item['betamount']."</b>";
+                                                    }else{
+                                                        
+                                                    }
+                                                }else{
+                                                    echo "<b style='color:red;'>0.00</b>";
+                                                }
+                                                ?></td>
                                         </tr>
                                         <!-- <tr>
                                             <td width="37%">Request<br><?=number_format($item['amount'],2);?></td>
