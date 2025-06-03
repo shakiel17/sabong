@@ -23,10 +23,12 @@
             }else{
                 redirect(base_url());
             }
+            $date=date('Y-m-d');            
+            $data['fight'] = $this->Sabong_model->getActiveFight($date);
             $this->load->view('templates/header');
             $this->load->view('templates/sidebar');
             $this->load->view('templates/navbar');
-            $this->load->view('pages/'.$page);
+            $this->load->view('pages/'.$page,$data);
             $this->load->view('templates/modal');
             $this->load->view('templates/footer');
         }
@@ -184,6 +186,66 @@
         public function fetchWithdrawRequest(){            
             $data=$this->Sabong_model->fetchWithdrawRequest();
             echo json_encode($data);
+        }
+
+        public function fetchBetAmount(){
+            $id=$this->input->post('id');
+            $data=$this->Sabong_model->fetchBetAmount($id);
+            echo json_encode($data);
+        }
+
+        public function fetchBetStat(){
+            $id=$this->input->post('id');
+            $data=$this->Sabong_model->fetchBetstatus($id);
+            echo json_encode($data);
+        }
+
+        public function submit_bet(){
+           $submit=$this->Sabong_model->save_bet();
+           if($submit){
+                
+           }else{
+                $this->session->set_flashdata('error','Insufficient balance!');
+           }
+           redirect(base_url('main'));
+        }
+        public function bet_history(){
+            $page = "bet_history";
+            if(!file_exists(APPPATH.'views/pages/'.$page.".php")){
+                show_404();
+            }
+            if($this->session->user_login){                
+            }else{
+                redirect(base_url());
+            }
+            $date=date('Y-m-d');
+            $data['items'] = $this->Sabong_model->getBetHistory($this->session->customer_id,$date);
+            $data['title'] = 'Betting Record';
+            $this->load->view('templates/header');
+            $this->load->view('templates/sidebar');
+            $this->load->view('templates/navbar');
+            $this->load->view('pages/'.$page,$data);
+            $this->load->view('templates/modal');
+            $this->load->view('templates/footer');
+        }
+        public function search_bet_history(){
+            $page = "bet_history";
+            if(!file_exists(APPPATH.'views/pages/'.$page.".php")){
+                show_404();
+            }
+            if($this->session->user_login){                
+            }else{
+                redirect(base_url());
+            }
+            $date=$this->input->post('datearray');
+            $data['items'] = $this->Sabong_model->getBetHistory($this->session->customer_id,$date);
+            $data['title'] = 'Betting Record';
+            $this->load->view('templates/header');
+            $this->load->view('templates/sidebar');
+            $this->load->view('templates/navbar');
+            $this->load->view('pages/'.$page,$data);
+            $this->load->view('templates/modal');
+            $this->load->view('templates/footer');
         }
         //=====================================Admin Module==========================================
         public function admin(){
@@ -353,6 +415,24 @@
             $this->load->view('pages/admin/'.$page,$data);
             $this->load->view('templates/modal');
             $this->load->view('templates/footer');
+        }
+        public function close_betting($fight_no){
+            $approve=$this->Sabong_model->close_betting($fight_no);
+            if($approve){
+                $this->session->set_flashdata('success','Betting successfully closed!');
+            }else{
+                $this->session->set_flashdata('failed','Betting cannot be closed!');
+            }
+            redirect(base_url('active_fight'));
+        }
+        public function fight_result($fight_no,$side){
+            $approve=$this->Sabong_model->fight_result($fight_no,$side);
+            if($approve){
+                //$this->session->set_flashdata('success','Betting successfully closed!');
+            }else{
+                //$this->session->set_flashdata('failed','Betting cannot be closed!');
+            }
+            redirect(base_url('fight_list'));
         }
         //=====================================Admin Module==========================================
     }

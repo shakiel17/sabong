@@ -51,6 +51,10 @@
             $result=$this->db->query("SELECT * FROM customer_account WHERE customer_id='$id'");
             return $result->row_array();
         }
+        public function getBetHistory($id,$date){            
+            $result=$this->db->query("SELECT fd.*,SUM(fd.amount) as betamount,fr.win_result FROM fight_details fd INNER JOIN fight_result fr ON fr.fight_no=fd.fight_no WHERE fd.customer_id='$id' AND fd.datearray='$date' GROUP BY fd.fight_no,fd.bet_side ORDER BY fd.fight_no DESC");
+            return $result->result_array();
+        }
         //==================================End of Getting Data Model=================================================
         
 //====================================================================================================================================================================
@@ -183,6 +187,16 @@
             $result=$this->db->query("SELECT COUNT(ci.customer_id) as totalcount FROM cash_out ci WHERE ci.`status`='pending' ORDER BY ci.datearray ASC, ci.timearray ASC");
             return $result->result_array();
         }        
+
+        public function fetchBetAmount($id){
+            $result=$this->db->query("SELECT SUM(amount) as totalamount FROM fight_details WHERE fight_no='$id' GROUP BY fight_no");
+            return $result->result_array();
+        }
+
+        public function fetchBetStatus($id){
+            $result=$this->db->query("SELECT * FROM fight WHERE fight_no='$id'");
+            return $result->result_array();
+        }
         //=================================End of Auto Refresh Model==========================================
 
 //====================================================================================================================================================================
@@ -195,10 +209,15 @@
 
         public function getActiveFight($date){
             $result=$this->db->query("SELECT * FROM fight WHERE (`status`='open' OR `status`='close') AND datearray='$date'");
-            return $result->row_array();
+            if($result->num_rows()>0){
+                return $result->row_array();
+            }else{
+                return false;
+            }
         }
         public function getFightDetailsBySide($side,$fightno){
-            $result=$this->db->query("SELECT * FROM fight_details WHERE bet_side='$side' AND fight_no='$fightno'");
+            $date=date('Y-m-d');
+            $result=$this->db->query("SELECT * FROM fight_details WHERE bet_side='$side' AND fight_no='$fightno' AND datearray='$date'");
             return $result->result_array();
         }
         
@@ -220,12 +239,128 @@
             }
         }
         public function check_fight(){
-            $result=$this->db->query("SELECT * FROM fight WHERE `status`='open' OR `status`='close'");
+            $date=date('Y-m-d');
+            $result=$this->db->query("SELECT * FROM fight WHERE `status`='open' OR `status`='close' AND datearray='$date'");
             if($result->num_rows() > 0){
                 return true;
             }else{
                 return false;
             }
+        }
+
+        public function save_bet(){
+            $btnBet=$this->input->post('btnBet');
+            $amount=$this->input->post('amount');
+            $fight_no=$this->input->post('fight_no');
+            $date=date('Y-m-d');
+            $time=date('H:i:s');
+            $customer_id=$this->session->customer_id;
+
+            if($btnBet=="Bet Meron"){
+                $side="meron";
+            }
+
+            if($btnBet=="Bet Wala"){
+                $side="wala";
+            }
+            $check=$this->db->query("SELECT * FROM customer_account WHERE customer_id='$customer_id'");
+            $acc=$check->row_array();
+
+            $rembal=$acc['amount'];
+            if($rembal >= $amount){
+                $this->db->query("INSERT INTO fight_details(`fight_no`,`customer_id`,`amount`,`bet_side`,`datearray`,`timearray`) VALUES('$fight_no','$customer_id','$amount','$side','$date','$time')");
+                $newbal=$rembal-$amount;
+                $this->db->query("UPDATE customer_account SET amount='$newbal' WHERE customer_id='$customer_id'");
+            }            
+
+            $query=$this->Sabong_model->getFightDetailsBySide('meron',$fight_no);
+            $meron=0;
+            foreach($query as $row){
+                $meron += $row['amount'];
+            }
+            $query=$this->Sabong_model->getFightDetailsBySide('wala',$fight_no);
+            $wala=0;
+            foreach($query as $row){
+                $wala += $row['amount'];
+            }
+
+            $totalbet=$meron+$wala;
+            $odds_meron=0;
+            if($meron > 0){
+                $odds_meron=($totalbet/$meron)*0.85;
+            }
+            $odds_wala=0;
+            if($wala > 0){
+                $odds_wala=($totalbet/$wala)*0.85;
+            }
+
+            $this->db->query("UPDATE fight SET odds_meron='$odds_meron',odds_wala='$odds_wala' WHERE fight_no='$fight_no' AND datearray='$date'");
+            if($rembal >= $amount){
+                return true;
+            }else{
+                return false;
+            }
+
+        }
+        public function close_betting($fight_no){
+            $date=date('Y-m-d');
+            $result=$this->db->query("UPDATE fight SET `status`='close' WHERE fight_no='$fight_no' AND datearray='$date'");
+            if($result){
+                return true;
+            }else{
+                return false;
+            }
+        }
+        public function fight_result($fight_no,$side){
+            $date=date('Y-m-d');
+            $time=date('H:i:s');
+            $query=$this->Sabong_model->getFightDetailsBySide('meron',$fight_no);
+            $meron=0;
+            foreach($query as $row){
+                $meron += $row['amount'];
+            }
+            $query=$this->Sabong_model->getFightDetailsBySide('wala',$fight_no);
+            $wala=0;
+            foreach($query as $row){
+                $wala += $row['amount'];
+            }
+            if($side=="draw"){
+                $meron=0;
+                $wala=0;
+            }
+            $this->db->query("INSERT INTO fight_result(`fight_no`,`meron_amount`,`wala_amount`,`win_result`,`datearray`,`timearray`) VALUES('$fight_no','$meron','$wala','$side','$date','$time')");
+
+            $fquery=$this->db->query("SELECT * FROM fight WHERE fight_no='$fight_no' AND datearray='$date'");
+            $fight=$fquery->row_array();
+            $odds_meron=$fight['odds_meron'];
+            $odds_wala=$fight['odds_wala'];
+            if($side=="meron"){
+                $odds=$odds_meron;
+            }else if($side=="wala"){
+                $odds=$odds_wala;
+            }else{
+                $odds=1;
+            }
+            if($side=="draw"){
+                $query=$this->db->query("SELECT * FROM fight_details WHERE fight_no='$fight_no' AND datearray='$date'");
+            }else{
+                $query=$this->db->query("SELECT * FROM fight_details WHERE fight_no='$fight_no' AND bet_side='$side' AND datearray='$date'");
+            }            
+            if($query->num_rows()>0){
+                $items=$query->result_array();
+                foreach($items as $item){
+                    $c_id=$item['customer_id'];
+                    $amount=$item['amount'];
+                    $prof=$this->db->query("SELECT * FROM customer_account WHERE customer_id='$c_id'");
+                    $row=$prof->row_array();
+                    $prev_bal=$row['amount'];
+                    $winamount=$amount*$odds;
+                    $new_bal=$prev_bal+$winamount;
+                    $this->db->query("UPDATE customer_account SET amount='$new_bal' WHERE customer_id='$c_id'");
+                }
+            }
+            $this->db->query("UPDATE fight SET `status`='done' WHERE fight_no='$fight_no' AND datearray='$date'");
+            return true;
         }
         //=================================End of Fight Model===============================================
     }
