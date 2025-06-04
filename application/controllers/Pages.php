@@ -249,7 +249,7 @@
         }
         //=====================================Admin Module==========================================
         public function admin(){
-             $page = "index";
+             $page = "login";
             if(!file_exists(APPPATH.'views/pages/'.$page.".php")){
                 show_404();
             }
