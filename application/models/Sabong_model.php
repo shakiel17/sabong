@@ -57,7 +57,7 @@
             return $result->row_array();
         }
         public function getBetHistory($id,$date){            
-            $result=$this->db->query("SELECT fd.*,SUM(fd.amount) as betamount,fr.win_result FROM fight_details fd INNER JOIN fight_result fr ON fr.fight_no=fd.fight_no WHERE fd.customer_id='$id' AND fd.datearray='$date' GROUP BY fd.fight_no,fd.bet_side ORDER BY fd.fight_no DESC");
+            $result=$this->db->query("SELECT fd.*,SUM(fd.amount) as betamount,fr.win_result FROM fight_details fd INNER JOIN fight_result fr ON fr.fight_no=fd.fight_no AND fr.datearray=fd.datearray WHERE fd.customer_id='$id' AND fd.datearray='$date' GROUP BY fd.bet_side,fd.fight_no ORDER BY fd.fight_no DESC");
             return $result->result_array();
         }
         public function getFightResult($fight_no,$date){

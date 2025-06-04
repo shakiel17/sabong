@@ -45,8 +45,7 @@
                                                     $totaldeposit += $item['betamount']*$row['odds_wala']-$item['betamount'];
                                                 }else{
                                                     
-                                                }
-                                                
+                                                }                                                
                                             }                                        
                                             // if($item['status']=="pending" || $item['status']=="cancelled"){
                                             //     $color="red";
@@ -83,9 +82,9 @@
                                                 <?php
                                                 if($item['bet_side']==$item['win_result']){
                                                     if($item['win_result']=="meron"){
-                                                        echo "<b style='color:green;'>".$item['betamount']*$row['odds_meron']-$item['betamount']."</b>";
+                                                        echo "<b style='color:green;'>".$item['betamount']*$row['odds_meron']."</b>";
                                                     }else if($item['win_result']=="wala"){
-                                                        echo "<b style='color:green;'>".$item['betamount']*$row['odds_wala']-$item['betamount']."</b>";
+                                                        echo "<b style='color:green;'>".$item['betamount']*$row['odds_wala']."</b>";
                                                     }else{
                                                         
                                                     }

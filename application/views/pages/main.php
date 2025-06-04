@@ -23,13 +23,16 @@
               $btn="success";
               $undo="";
             }
-           
-            $chkbetWala=$this->Sabong_model->checkbet($fight['fight_no'],$this->session->customer_id,'wala');
-            if(count($chkbetWala)>0){
-              $walabet="";
-            }else{
-              $walabet="display:none;";
-            }           
+           $chkbetMeron=$this->Sabong_model->checkbet($fight['fight_no'],$this->session->customer_id,'meron');
+           $myBetmeron=0;
+           foreach($chkbetMeron as $betam){
+              $myBetmeron += $betam['amount'];
+           }
+           $myBetwala=0;
+           $chkbetWala=$this->Sabong_model->checkbet($fight['fight_no'],$this->session->customer_id,'wala');
+            foreach($chkbetWala as $betam){
+              $myBetwala += $betam['amount'];
+           }          
         ?>        
 
         <script>
@@ -133,6 +136,13 @@
                         <tr>
                             <td width="50%" align="center" style="font-size:1em;"><b>Odds: <?=number_format($fight['odds_meron'],3);?></b></td>
                             <td width="50%" align="center" style="font-size:1em;"><b>Odds: <?=number_format($fight['odds_wala'],3);?></b></td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">&nbsp;</td>                        
+                        </tr>
+                        <tr>
+                            <td width="50%" align="center" style="font-size:1em;">Your Bet: <?=$myBetmeron;?></td>
+                            <td width="50%" align="center" style="font-size:1em;">Your Bet: <?=$myBetwala;?></td>
                         </tr>
                         <tr>
                             <td colspan="2">&nbsp;</td>                        
