@@ -70,6 +70,11 @@
                               $wala += $row['amount'];
                             }
                             $fres=$this->Sabong_model->getFightResult($item['fight_no'],date('Y-m-d'));
+                            if($fres){
+                              $fresult=$fres['win_result'];
+                            }else{
+                              $fresult="ongoing";
+                            }
                             echo "<tr>";
                                 echo "<td>#$item[fight_no]</td>";
                                 echo "<td align='right'>".number_format($meron,2)."</td>";
@@ -77,7 +82,7 @@
                                 echo "<td align='center'>$item[status]</td>";
                                 ?>
                                 <td width="20%" align="center">
-                                  <?=$fres['win_result'];?>
+                                  <?=$fresult;?>
                                 </td>
                                 <?php
                             echo "</tr>";

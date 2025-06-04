@@ -247,6 +247,16 @@
             $this->load->view('templates/modal');
             $this->load->view('templates/footer');
         }
+
+        public function undo_bet($fightno,$customer_id,$side){
+            $undobet=$this->Sabong_model->undo_bet($fightno,$customer_id,$side);
+            if($undobet){
+                
+           }else{
+                $this->session->set_flashdata('error','Unable to undo bet!');
+           }
+            redirect(base_url('main'));
+        }
         //=====================================Admin Module==========================================
         public function admin(){
              $page = "login";

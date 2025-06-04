@@ -16,11 +16,20 @@
               $stat="closed";
               $bet="disabled";
               $btn="danger";
+              $undo="disabled";
             }else{
               $stat="open";
               $bet="";
               $btn="success";
+              $undo="";
             }
+           
+            $chkbetWala=$this->Sabong_model->checkbet($fight['fight_no'],$this->session->customer_id,'wala');
+            if(count($chkbetWala)>0){
+              $walabet="";
+            }else{
+              $walabet="display:none;";
+            }           
         ?>        
 
         <script>
@@ -144,6 +153,28 @@
                         <tr>
                             <td width="50%" align="center"><input type="submit" class="btn" style="width:98%; background:green; color:white;" name="btnBet" value="Bet Meron" <?=$bet;?>></td>
                             <td width="50%" align="center"><input type="submit" class="btn" style="width:98%; background:green; color:white;" name="btnBet" value="Bet Wala" <?=$bet;?>></td>
+                        </tr>
+                        <tr>
+                            <td width="50%" align="center">
+                              <?php
+                              $chkbetMeron=$this->Sabong_model->checkbet($fight['fight_no'],$this->session->customer_id,'meron');
+                              if(count($chkbetMeron)>0 && $fight['status']=="open"){
+                                ?>
+                                <a href="<?=base_url('undo_bet/'.$fight['fight_no']."/".$this->session->customer_id."/meron");?>" class="btn" style="width:98%; background:red; color:white;<?=$meronbet;?>">Undo Bet</a>
+                                <?php
+                              }
+                              ?>                              
+                            </td>
+                            <td width="50%" align="center">
+                              <?php
+                              $chkbetWala=$this->Sabong_model->checkbet($fight['fight_no'],$this->session->customer_id,'wala');
+                              if(count($chkbetWala) > 0 && $fight['status']=="open"){
+                                ?>
+                                <a href="<?=base_url('undo_bet/'.$fight['fight_no']."/".$this->session->customer_id."/wala");?>" class="btn" style="width:98%; background:red; color:white;<?=$walabet;?>">Undo Bet</a>
+                                <?php
+                              }
+                              ?>                              
+                            </td>
                         </tr>                                         
                         </form>     
                     </table>                    
@@ -159,8 +190,8 @@
               </div>                                         
             </div>
           </div>
-        </div>
-        <?php
+        </div>        
+        <?php        
           }else{
             ?>
             <div class="right_col" role="main">          
@@ -202,4 +233,4 @@
             <?php
           }
           ?>
-        <!-- /page content -->
+        <!-- /page content -->         

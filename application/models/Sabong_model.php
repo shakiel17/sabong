@@ -122,6 +122,11 @@
             }
             
         }
+        public function checkbet($id,$c_id,$side){
+            $date=date('Y-m-d');
+            $result=$this->db->query("SELECT * FROM fight_details WHERE fight_no='$id' AND customer_id='$c_id' AND bet_side='$side' AND datearray='$date'");
+            return $result->result_array();
+        }
         //==================================End of Getting Data Model=================================================
         
 //====================================================================================================================================================================
@@ -237,6 +242,7 @@
             $result=$this->db->query("SELECT ci.*,c.fullname FROM cash_out ci INNER JOIN customer c ON c.customer_id=ci.customer_id WHERE ci.`status`='pending' ORDER BY ci.datearray ASC, ci.timearray ASC");
             return $result->result_array();
         }
+
         //=======================================End of Cash In/Out Model==============================================
 
 //====================================================================================================================================================================
@@ -258,12 +264,14 @@
         }        
 
         public function fetchBetAmount($id){
-            $result=$this->db->query("SELECT SUM(amount) as totalamount FROM fight_details WHERE fight_no='$id' GROUP BY fight_no");
+            $date=date('Y-m-d');
+            $result=$this->db->query("SELECT SUM(amount) as totalamount FROM fight_details WHERE fight_no='$id' AND datearray='$date' GROUP BY fight_no");
             return $result->result_array();
         }
 
         public function fetchBetStatus($id){
-            $result=$this->db->query("SELECT * FROM fight WHERE fight_no='$id'");
+            $date=date('Y-m-d');
+            $result=$this->db->query("SELECT * FROM fight WHERE fight_no='$id' AND datearray='$date'");
             return $result->result_array();
         }
         //=================================End of Auto Refresh Model==========================================
@@ -294,7 +302,7 @@
             $date=date('Y-m-d');
             $time=date('H:i:s');
             $fight_no=1;            
-            $query=$this->db->query("SELECT fight_no FROM fight ORDER BY fight_no DESC LIMIT 1");
+            $query=$this->db->query("SELECT fight_no FROM fight WHERE datearray='$date' ORDER BY fight_no DESC LIMIT 1");
             if($query->num_rows()>0){
                 $res=$query->row_array();
                 $fight_no=$res['fight_no'] + 1;                
@@ -430,6 +438,54 @@
             }
             $this->db->query("UPDATE fight SET `status`='done' WHERE fight_no='$fight_no' AND datearray='$date'");
             return true;
+        }
+        public function undo_bet($id,$cid,$side){
+            
+            $date=date('Y-m-d');            
+            
+            $check=$this->db->query("SELECT * FROM customer_account WHERE customer_id='$cid'");
+            $acc=$check->row_array();
+            $rembal=$acc['amount'];
+
+            $bq=$this->db->query("SELECT *,SUM(amount) as amount FROM fight_details WHERE fight_no='$id' AND customer_id='$cid' AND bet_side='$side' AND datearray='$date' GROUP BY bet_side");
+            $bres=$bq->row_array();
+
+            $betamount=$bres['amount'];
+
+            //if($rembal >= $amount){
+                $this->db->query("DELETE FROM fight_details WHERE fight_no='$id' AND customer_id='$cid' AND bet_side='$side' AND datearray='$date'");
+                $newbal=$rembal+$betamount;
+                $this->db->query("UPDATE customer_account SET amount='$newbal' WHERE customer_id='$cid'");
+            //}            
+
+            $query=$this->Sabong_model->getFightDetailsBySide('meron',$id);
+            $meron=0;
+            foreach($query as $row){
+                $meron += $row['amount'];
+            }
+            $query=$this->Sabong_model->getFightDetailsBySide('wala',$id);
+            $wala=0;
+            foreach($query as $row){
+                $wala += $row['amount'];
+            }
+
+            $totalbet=$meron+$wala;
+            $odds_meron=0;
+            if($meron > 0){
+                $odds_meron=($totalbet/$meron)*0.85;
+            }
+            $odds_wala=0;
+            if($wala > 0){
+                $odds_wala=($totalbet/$wala)*0.85;
+            }
+
+            $this->db->query("UPDATE fight SET odds_meron='$odds_meron',odds_wala='$odds_wala' WHERE fight_no='$id' AND datearray='$date'");
+            if($rembal >= $amount){
+                return true;
+            }else{
+                return false;
+            }
+
         }
         //=================================End of Fight Model===============================================
 
