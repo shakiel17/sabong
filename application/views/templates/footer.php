@@ -98,7 +98,25 @@
             document.getElementById('btnBetAmount').disabled = true;
           }
         });
-      //});      
+      //});
+      $('.editUser').click(function(){
+        var data=$(this).data('id');
+        var id=data.split('_');
+        document.getElementById('user_id').value = id[0];
+        document.getElementById('user_fullname').value = id[1];
+        document.getElementById('user_role').value = id[2];
+        document.getElementById('user_name').value = id[3];
+        document.getElementById('user_password').value = id[4];
+      });
+
+      function mouseoverPass() {
+        let obj = document.getElementById('myPassword');
+        obj.type = 'text';
+      }
+      function mouseoutPass() {
+        let obj = document.getElementById('myPassword');
+        obj.type = 'password';
+      }
     </script>
   </body>
 </html>

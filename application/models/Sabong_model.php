@@ -63,6 +63,14 @@
             $result=$this->db->query("SELECT * FROM fight_result WHERE datearray='$date' ORDER BY fight_no ASC");
             return $result->result_array();
         }
+        public function getAllUserAccount(){
+            $result=$this->db->query("SELECT * FROM users");
+            return $result->result_array();
+        }
+        public function getAllUserDetails(){
+            $result=$this->db->query("SELECT c.*,ca.amount FROM customer c INNER JOIN customer_account ca ON ca.customer_id=c.customer_id");
+            return $result->result_array();
+        }
         //==================================End of Getting Data Model=================================================
         
 //====================================================================================================================================================================
@@ -371,5 +379,40 @@
             return true;
         }
         //=================================End of Fight Model===============================================
+
+//====================================================================================================================================
+
+        //=================================Start of User Account Model======================================
+        public function save_user_account(){
+            $id=$this->input->post('userid');
+            $fullname=$this->input->post('fullname');
+            $role=$this->input->post('designation');
+            $username=$this->input->post('username');
+            $password=$this->input->post('password');
+            $check=$this->db->query("SELECT * FROM users WHERE username='$username' AND id <> '$id'");
+            if($check->num_rows()>0){
+                return false;
+            }else{
+                if($id==""){
+                    $result=$this->db->query("INSERT INTO users(`fullname`,`role`,`username`,`password`,`status`) VALUES('$fullname','$role','$username','$password','Active')");
+                }else{
+                    $result=$this->db->query("UPDATE users SET fullname='$fullname',`role`='$role',username='$username',`password`='$password' WHERE id='$id'");
+                }
+            }            
+            if($result){
+                return true;
+            }else{
+                return false;
+            }
+        }
+        public function delete_user_account($id){
+            $result=$this->db->query("DELETE FROM users WHERE id='$id'");
+            if($result){
+                return true;
+            }else{
+                return false;
+            }
+        }
+        //=================================End of User Account Model======================================
     }
 ?>

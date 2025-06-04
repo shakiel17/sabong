@@ -464,6 +464,60 @@
             $data['items'] = $this->Sabong_model->getAllFightResult($date);            
             $this->load->view('pages/admin/'.$page,$data);            
         }
+        public function user_account(){
+             $page = "user_account";
+            if(!file_exists(APPPATH.'views/pages/admin/'.$page.".php")){
+                show_404();
+            }
+            if($this->session->admin_login){                
+            }else{
+                redirect(base_url('admin'));
+            }
+            $data['title'] = "User Account Manager";
+            $data['items'] = $this->Sabong_model->getAllUserAccount();
+            $this->load->view('templates/header');
+            $this->load->view('templates/admin/sidebar');
+            $this->load->view('templates/admin/navbar');
+            $this->load->view('pages/admin/'.$page,$data);
+            $this->load->view('templates/modal');
+            $this->load->view('templates/footer');
+        }
+        public function save_user_account(){
+            $approve=$this->Sabong_model->save_user_account();
+            if($approve){
+                $this->session->set_flashdata('success','User account successfully saved!');
+            }else{
+                $this->session->set_flashdata('failed','Unable to save user account!');
+            }
+            redirect(base_url('user_account'));
+        }
+        public function delete_user_account($id){
+            $approve=$this->Sabong_model->delete_user_account($id);
+            if($approve){
+                $this->session->set_flashdata('success','User account details successfully deleted!');
+            }else{
+                $this->session->set_flashdata('failed','Unable to delete user account details!');
+            }
+            redirect(base_url('user_account'));
+        }
+        public function user_list(){
+             $page = "user_list";
+            if(!file_exists(APPPATH.'views/pages/admin/'.$page.".php")){
+                show_404();
+            }
+            if($this->session->admin_login){                
+            }else{
+                redirect(base_url('admin'));
+            }
+            $data['title'] = "User Master List";
+            $data['items'] = $this->Sabong_model->getAllUserDetails();
+            $this->load->view('templates/header');
+            $this->load->view('templates/admin/sidebar');
+            $this->load->view('templates/admin/navbar');
+            $this->load->view('pages/admin/'.$page,$data);
+            $this->load->view('templates/modal');
+            $this->load->view('templates/footer');
+        }
         //=====================================Admin Module==========================================
     }
 ?>
