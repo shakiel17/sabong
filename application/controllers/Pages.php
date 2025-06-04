@@ -4,7 +4,7 @@
     date_default_timezone_set('Asia/Manila');
     class Pages extends CI_Controller{
         public function index(){
-            $page = "index";
+            $page = "login";
             if(!file_exists(APPPATH.'views/pages/'.$page.".php")){
                 show_404();
             }

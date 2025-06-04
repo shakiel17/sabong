@@ -8,6 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <title>Online Bet</title>
+    <link rel="icon" type="image/x-icon" href="<?=base_url('design/assets/production/images/sabong.png');?>">
 
     <!-- Bootstrap -->
     <link href="<?=base_url('design/assets/vendors/bootstrap/dist/css/bootstrap.min.css');?>" rel="stylesheet">
