@@ -40,9 +40,9 @@
                                                 $row=$query->row_array(); 
                                             if($item['bet_side']==$item['win_result']){                                                
                                                 if($item['win_result']=="meron"){
-                                                    $totaldeposit += $item['betamount']*$row['odds_meron']-$item['betamount'];
+                                                    $totaldeposit += $item['betamount']*$row['odds_meron'];
                                                 }else if($item['win_result']=="wala"){
-                                                    $totaldeposit += $item['betamount']*$row['odds_wala']-$item['betamount'];
+                                                    $totaldeposit += $item['betamount']*$row['odds_wala'];
                                                 }else{
                                                     
                                                 }                                                
