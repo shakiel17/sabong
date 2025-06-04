@@ -11,9 +11,18 @@
                       <img src="<?=base_url('design/assets/production/images/img.jpg');?>" alt=""><?=$this->session->fullname;?>
                     </a>
                     <div class="dropdown-menu dropdown-usermenu pull-right" aria-labelledby="navbarDropdown">
+
+                      <a class="dropdown-item"  href="<?=base_url('deposit');?>">
+                          <span class="badge pull-right"><i class="fa fa-credit-card"></i></span>
+                          <span>Deposit</span>
+                        </a>
+                        <a class="dropdown-item"  href="<?=base_url('withdraw');?>">
+                          <span class="badge pull-right"><i class="fa fa-database"></i></span>
+                          <span>Withdraw</span>
+                        </a>
                       <!-- <a class="dropdown-item"  href="javascript:;"> Profile</a> -->
                         <a class="dropdown-item"  href="<?=base_url('bet_history');?>">
-                          <span class="badge bg-red pull-right"><i class="fa fa-history"></i></span>
+                          <span class="badge pull-right"><i class="fa fa-history"></i></span>
                           <span>Bet History</span>
                         </a>
                     <!-- <a class="dropdown-item"  href="javascript:;">Help</a> -->
