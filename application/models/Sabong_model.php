@@ -39,7 +39,12 @@
             if($result->num_rows()>0){
                 return $result->row_array();
             }else{
-                return false;
+                $result=$this->db->query("SELECT * FROM users WHERE username='$username' AND `password`='$password'");
+                if($result){
+                    return $result->row_array();
+                }else{
+                    return false;
+                }                
             }
         }
         //===================================End of Login/Register Model==================================
@@ -71,6 +76,52 @@
             $result=$this->db->query("SELECT c.*,ca.amount FROM customer c INNER JOIN customer_account ca ON ca.customer_id=c.customer_id");
             return $result->result_array();
         }
+        public function getTodayBet($date){
+            $result=$this->db->query("SELECT SUM(meron_amount+wala_amount) as totalbet FROM fight_result WHERE datearray='$date' GROUP BY datearray");
+            if($result->num_rows()>0){
+                return $result->row_array();
+            }else{
+                return false;
+            }            
+        }
+        public function getTodayDeposit($date){
+            $result=$this->db->query("SELECT SUM(amount) as totaldeposit FROM cash_in WHERE datearray='$date' AND `status`='approved' GROUP BY datearray");
+            if($result->num_rows()>0){
+                return $result->row_array();
+            }else{
+                return false;
+            }            
+        }
+        public function getTodayWithdrawal($date){
+            $result=$this->db->query("SELECT SUM(amount) as totalwithdraw FROM cash_out WHERE datearray='$date' AND `status`='approved' GROUP BY datearray");
+            if($result->num_rows()>0){
+                return $result->row_array();
+            }else{
+                return false;
+            }            
+        }
+        public function change_password(){
+            $username=$this->input->post('username');
+            $oldpass=$this->input->post('oldpassword');
+            $newpass=$this->input->post('newpassword');
+            echo "<script>";
+            if($oldpass==$newpass){
+                echo "alert('Error! New password should not be equal to old password!');";
+            }else{
+                if($username=="admin"){
+                    $result=$this->db->query("UPDATE `admin` SET `password`='$newpass' WHERE username='$username'");
+                }else{
+                    $result=$this->db->query("UPDATE `users` SET `password`='$newpass' WHERE username='$username'");
+                }
+            }       
+            echo "</script>";     
+            if($result){
+                return true;
+            }else{
+                return false;
+            }
+            
+        }
         //==================================End of Getting Data Model=================================================
         
 //====================================================================================================================================================================
@@ -99,6 +150,7 @@
         }
 
         public function approve_deposit($refno){
+            $user=$this->session->fullname;
             $querydep=$this->db->query("SELECT * FROM cash_in WHERE refno='$refno'");
             $item=$querydep->row_array();
             $queryacc=$this->db->query("SELECT * FROM customer_account WHERE customer_id='$item[customer_id]'");
@@ -112,7 +164,7 @@
             $time=date('H:i:s');
             $result=$this->db->query("UPDATE customer_account SET amount='$new_amount' WHERE customer_id='$item[customer_id]'");
             if($result){
-                $this->db->query("UPDATE cash_in SET `status`='approved',date_received='$date',time_received='$time' WHERE refno='$refno'");
+                $this->db->query("UPDATE cash_in SET `status`='approved',date_received='$date',time_received='$time',loginuser='$user' WHERE refno='$refno'");
                 return true;
             }else{
                 return false;
@@ -147,7 +199,8 @@
             }
         }
 
-        public function approve_withdrawal($refno){            
+        public function approve_withdrawal($refno){ 
+            $user=$this->session->fullname;           
             $querydep=$this->db->query("SELECT * FROM cash_out WHERE refno='$refno'");
             $item=$querydep->row_array();
             $queryacc=$this->db->query("SELECT * FROM customer_account WHERE customer_id='$item[customer_id]'");
@@ -160,7 +213,7 @@
 
             $result=$this->db->query("UPDATE customer_account SET amount='$new_amount' WHERE customer_id='$item[customer_id]'");
             if($result){
-                $this->db->query("UPDATE cash_out SET `status`='approved' WHERE refno='$refno'");
+                $this->db->query("UPDATE cash_out SET `status`='approved',loginuser='$user' WHERE refno='$refno'");
                 return true;
             }else{
                 return false;

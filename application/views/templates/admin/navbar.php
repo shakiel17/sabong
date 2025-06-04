@@ -3,7 +3,7 @@
             <div class="nav_menu">
                 <div class="nav toggle">
                   <a id="menu_toggle"><i class="fa fa-bars"></i></a>
-                </div>
+                </div>                            
                 <nav class="nav navbar-nav">
                 <ul class=" navbar-right">
                   <li class="nav-item dropdown open" style="padding-left: 15px;">
@@ -11,12 +11,7 @@
                       <img src="<?=base_url('design/assets/production/images/img.jpg');?>" alt=""><?=$this->session->fullname;?>
                     </a>
                     <div class="dropdown-menu dropdown-usermenu pull-right" aria-labelledby="navbarDropdown">
-                      <a class="dropdown-item"  href="javascript:;"> Profile</a>
-                        <a class="dropdown-item"  href="javascript:;">
-                          <span class="badge bg-red pull-right">50%</span>
-                          <span>Settings</span>
-                        </a>
-                    <a class="dropdown-item"  href="javascript:;">Help</a>
+                      <a class="dropdown-item"  href="#" data-toggle="modal" data-target="#ChangePassword"> Change Password</a>                       
                       <a class="dropdown-item"  href="<?=base_url('admin_logout');?>"><i class="fa fa-sign-out pull-right"></i> Log Out</a>
                     </div>
                   </li>

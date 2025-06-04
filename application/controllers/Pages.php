@@ -267,10 +267,17 @@
             }else{
                 redirect(base_url('admin'));
             }
+            $data['users'] = $this->Sabong_model->getAllUserDetails();
+            $data['cashier'] = $this->Sabong_model->getAllUserAccount();            
+            $data['bet'] = $this->Sabong_model->getTodayBet(date('Y-m-d'));
+            $data['fight'] = $this->Sabong_model->getAllFightByDate(date('Y-m-d'));
+            $data['fight_list'] = $this->Sabong_model->getAllFightResult(date('Y-m-d'));
+            $data['deposit'] = $this->Sabong_model->getTodayDeposit(date('Y-m-d'));
+            $data['withdraw'] = $this->Sabong_model->getTodayWithdrawal(date('Y-m-d'));
             $this->load->view('templates/header');
             $this->load->view('templates/admin/sidebar');
             $this->load->view('templates/admin/navbar');
-            $this->load->view('pages/admin/'.$page);
+            $this->load->view('pages/admin/'.$page,$data);
             $this->load->view('templates/modal');
             $this->load->view('templates/footer');
         }
@@ -279,9 +286,15 @@
             $password=$this->input->post('password');           
             $data=$this->Sabong_model->admin_authenticate($username,$password);
             if($data){
+                if($username=="admin"){
+                    $role="admin";
+                }else{
+                    $role=$data['role'];
+                }
                 $userdata=array(                    
                     'username' => $username,
                     'fullname' => $data['fullname'],
+                    'role' => $role,
                     'admin_login' => true
                 );
 
@@ -517,6 +530,17 @@
             $this->load->view('pages/admin/'.$page,$data);
             $this->load->view('templates/modal');
             $this->load->view('templates/footer');
+        }
+        public function change_password(){
+            $approve=$this->Sabong_model->change_password();
+            echo "<script>";
+            if($approve){
+                echo "alert('Password Sucessfully updated!');";
+            }else{                
+            }
+                echo "window.location='".base_url('adminmain')."';";
+            echo "</script>";
+            
         }
         //=====================================Admin Module==========================================
     }

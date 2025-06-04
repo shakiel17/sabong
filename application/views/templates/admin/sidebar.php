@@ -6,7 +6,17 @@
             <div class="navbar nav_title" style="border: 0;">
               <a href="<?=base_url();?>" class="site_title"><img src="<?=base_url('design/assets/production/images/sabong.png');?>" width="50"> <span>Online Sabong</span></a>
             </div>
-
+            <?php
+            if($this->session->role=="admin"){
+              $fight="";
+              $reports="";
+              $settings="";
+            }else{
+              $fight="style='display:none;'";
+              $reports="style='display:none;'";
+              $settings="style='display:none;'";
+            }
+            ?>
             <div class="clearfix"></div>
 
             <!-- menu profile quick info -->
@@ -30,7 +40,7 @@
                 <ul class="nav side-menu">
                   <li><a href="<?=base_url('adminmain');?>"><i class="fa fa-home"></i> Home</a>                    
                   </li>
-                  <li><a><i class="fa fa-gamepad"></i> Fights <span class="fa fa-chevron-down"></span></a>
+                  <li <?=$fight;?>><a><i class="fa fa-gamepad"></i> Fights <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
                       <li><a href="<?=base_url('fight_list');?>">Fight List</a></li>
                       <li><a href="<?=base_url('active_fight');?>">Active Fight</a></li>                      
@@ -42,12 +52,12 @@
                       <li><a href="<?=base_url('manage_withdrawal');?>">Withdrawal Requests</a></li>                      
                     </ul>
                   </li>
-                  <li><a><i class="fa fa-file-text-o"></i> Reports <span class="fa fa-chevron-down"></span></a>
+                  <li <?=$reports;?>><a><i class="fa fa-file-text-o"></i> Reports <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
                       <li><a href="<?=base_url('income');?>">Income</a></li>                      
                     </ul>
                   </li>
-                  <li><a><i class="fa fa-cogs"></i> Settings <span class="fa fa-chevron-down"></span></a>
+                  <li <?=$settings;?>><a><i class="fa fa-cogs"></i> Settings <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
                       <li><a href="<?=base_url('user_account');?>">User Account</a></li>
                       <li><a href="<?=base_url('user_list');?>">User List</a></li>                      
