@@ -238,12 +238,13 @@
             $dept_amount=$item['amount'];
             $prev_amount=$row['amount'];
 
-            $new_amount=$prev_amount-$dept_amount;
+            //$new_amount=$prev_amount-$dept_amount;
 
-            $result=$this->db->query("UPDATE customer_account SET amount='$new_amount' WHERE customer_id='$item[customer_id]'");
+           // $result=$this->db->query("UPDATE customer_account SET amount='$new_amount' WHERE customer_id='$item[customer_id]'");
+$result=$this->db->query("UPDATE cash_out SET `status`='approved',loginuser='$user' WHERE refno='$refno'");
+               
             if($result){
-                $this->db->query("UPDATE cash_out SET `status`='approved',loginuser='$user' WHERE refno='$refno'");
-                return true;
+                 return true;
             }else{
                 return false;
             }
