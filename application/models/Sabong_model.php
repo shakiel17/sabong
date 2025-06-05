@@ -274,6 +274,10 @@
             $result=$this->db->query("SELECT * FROM fight WHERE fight_no='$id' AND datearray='$date'");
             return $result->result_array();
         }
+        public function checkActiveFight($date){
+            $result=$this->db->query("SELECT * FROM fight WHERE (`status`='open' OR `status`='close') AND datearray='$date'");
+            return $result->result_array();
+        }
         //=================================End of Auto Refresh Model==========================================
 
 //====================================================================================================================================================================
@@ -292,6 +296,7 @@
                 return false;
             }
         }
+        
         public function getFightDetailsBySide($side,$fightno){
             $date=date('Y-m-d');
             $result=$this->db->query("SELECT * FROM fight_details WHERE bet_side='$side' AND fight_no='$fightno' AND datearray='$date'");

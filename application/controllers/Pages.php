@@ -200,6 +200,12 @@
             echo json_encode($data);
         }
 
+        public function checkActiveFight(){
+            $id=date('Y-m-d');
+            $data=$this->Sabong_model->checkActiveFight($id);
+            echo json_encode($data);
+        }
+
         public function submit_bet(){
            $submit=$this->Sabong_model->save_bet();
            if($submit){

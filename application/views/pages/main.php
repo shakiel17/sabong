@@ -1,5 +1,6 @@
 <!-- page content -->
-        <?php
+ 
+        <?php          
           if($fight){
             $query=$this->Sabong_model->getFightDetailsBySide('meron',$fight['fight_no']);
             $meron=0;
@@ -203,7 +204,28 @@
         </div>        
         <?php        
           }else{
-            ?>
+            ?>    
+            <script>
+    function fightRefresh(){                                                
+        $.ajax({
+          url:'<?=base_url();?>index.php/pages/checkActiveFight',
+          type:'post',          
+          dataType:'json',
+          success: function(response){
+           // alert('Fight');
+            if(response.length > 0){
+                //alert(totalbet);
+              window.location = window.location.href;
+            }else{            
+              //alert(response.length);
+              //window.location = window.location.href;
+            }           
+            //alert(prev_[0]['amount']);
+          }
+        });
+        }
+        setInterval('fightRefresh()', 3000);
+      </script>        
             <div class="right_col" role="main">          
             <div class="row">
               <div class="col-lg-8 col-md-12 col-sm-12">
