@@ -213,7 +213,11 @@
             $date=date('Y-m-d');
             $time=date('H:i:s');
             if($balance >= $amount){
+                $rembal=$balance-$amount;
                 $result=$this->db->query("INSERT INTO cash_out(`refno`,`customer_id`,`amount`,`datearray`,`timearray`) VALUES('$refno','$id','$amount','$date','$time')");
+                if($result){
+                    $this->db->query("UPDATE customer_account SET amount='$rembal' WHERE customer_id='$id'");
+                }
             }else{
                 return false;
             }
@@ -246,6 +250,15 @@
         }
 
         public function cancel_withdrawal($refno){
+            $query=$this->db->query("SELECT * FROM cash_out WHERE refno='$refno'");
+            $req=$query->row_array();
+            $cid=$req['customer_id'];
+            $camount=$req['amount'];
+            $qry=$this->db->query("SELECT * FROM customer_account WHERE customer_id='$cid'");
+            $rqry=$qry->row_array();
+            $prevbal=$rqry['amount'];
+            $newbal=$prevbal+$camount;
+            $this->db->query("UPDATE customer_account SET amount='$newbal' WHERE customer_id='$cid'");
             $result=$this->db->query("UPDATE cash_out SET `status`='cancelled' WHERE refno='$refno'");
             if($result){
                 return true;
