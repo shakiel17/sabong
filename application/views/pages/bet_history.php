@@ -4,8 +4,7 @@
 					<div class="row">
 					    <div class="col-lg-6 col-md-12 col-sm-12">
 						    <div class="title_left">
-							    <h4><?=$title;?></h4>
-                                <h4><a href="<?=base_url('main');?>"><i class="fa fa-arrow-left"></i> Back</a></h4>
+							    <h4><a href="<?=base_url('main');?>"><i class="fa fa-home fa-2x"></i></a> | <?=$title;?></h4>
 						    </div>						
                         </div>
 					</div>

@@ -127,6 +127,26 @@
             $result=$this->db->query("SELECT * FROM fight_details WHERE fight_no='$id' AND customer_id='$c_id' AND bet_side='$side' AND datearray='$date'");
             return $result->result_array();
         }
+
+        public function change_user_password(){
+            $username=$this->input->post('customer_id');
+            $oldpass=$this->input->post('oldpassword');
+            $newpass=$this->input->post('newpassword');
+            echo "<script>";
+            if($oldpass==$newpass){
+                echo "alert('Error! New password should not be equal to old password!');";
+            }else{
+                    $result=$this->db->query("UPDATE `customer` SET `password`='$newpass' WHERE customer_id='$username'");
+            }       
+            echo "</script>";     
+            if($result){
+                return true;
+            }else{
+                return false;
+            }
+            
+        }
+        
         //==================================End of Getting Data Model=================================================
         
 //====================================================================================================================================================================

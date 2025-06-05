@@ -1,9 +1,9 @@
 <!-- page content -->
 			<div class="right_col" role="main">
 				<div class="">
-					<div class="page-title">
+					<div class="col-lg-6 col-md-12 col-sm-12">
 						<div class="title_left">
-							<h3><a href="<?=base_url('main');?>"><i class="fa fa-home"></i></a> | <?=$title;?></h3>
+							<h4><a href="<?=base_url('main');?>"><i class="fa fa-home fa-2x"></i></a> | <?=$title;?></h4>
 						</div>
 
 						<!-- <div class="title_right">

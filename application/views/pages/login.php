@@ -114,7 +114,23 @@ button:hover{
 					<input type="text" name="username" placeholder="Username" required="">
 					<input type="password" name="password" placeholder="Password" required="">
 					<button>Login</button>
-				</form>
+				</form>				
+				<center>
+					<?php
+					if($this->session->error){
+					?>
+					<font style="color:red;"><?=$this->session->error;?></font>
+					<?php
+					}
+					?>
+					<?php
+					if($this->session->success){
+					?>
+					<font style="color:lightgreen;"><?=$this->session->success;?></font>
+					<?php
+					}
+					?>
+				</center>
 			</div>
             <div class="login">
 				<form action="<?=base_url('registration');?>" method="POST">

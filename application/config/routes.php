@@ -73,6 +73,7 @@ $route['adminmain'] = 'pages/adminmain';
 $route['admin_authenticate'] = 'pages/admin_authenticate';
 $route['admin'] = 'pages/admin';
 //=========================User Route============================
+$route['change_user_password'] = 'pages/change_user_password';
 $route['undo_bet/(:any)/(:any)/(:any)'] = 'pages/undo_bet/$1/$2/$3';
 $route['search_bet_history'] = 'pages/search_bet_history';
 $route['bet_history'] = 'pages/bet_history';

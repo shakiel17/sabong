@@ -263,6 +263,17 @@
            }
             redirect(base_url('main'));
         }
+        public function change_user_password(){
+            $approve=$this->Sabong_model->change_user_password();
+            echo "<script>";
+            if($approve){
+                echo "alert('Password Sucessfully updated!');";                
+            }else{                
+            }                
+                echo "window.location='".base_url('main')."';";
+            echo "</script>";
+            
+        }
         //=====================================Admin Module==========================================
         public function admin(){
              $page = "login";

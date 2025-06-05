@@ -1,5 +1,27 @@
 <!-- page content -->
- 
+  <style>
+      .date-time {
+        font-size: 2rem;
+        padding: 30px;
+        background-color: #000;
+        border-radius: 10px;
+        box-shadow: 0 0 10px #00000080;
+        }
+        .time {
+        font-size: 2.5rem;
+        margin-bottom: 10px;
+        font-weight: bold;
+        text-align:center;
+        color:#fff;
+        }
+        .date {
+        font-size: 2.2rem;
+        text-align:center;
+        color:#fff;
+        box-shadow:0 0 10px gray;
+        border-radius: 10px;
+        }
+    </style>
         <?php          
           if($fight){
             $query=$this->Sabong_model->getFightDetailsBySide('meron',$fight['fight_no']);
@@ -97,6 +119,29 @@
         setInterval('betRefresh()', 3000);
         
     </script>
+
+    <script>
+              function fightRefresh(){                                                
+                  $.ajax({
+                    url:'<?=base_url();?>index.php/pages/checkActiveFight',
+                    type:'post',          
+                    dataType:'json',
+                    success: function(response){
+                    // alert('Fight');
+                      if(response.length > 0){
+                          //alert(totalbet);
+                        
+                      }else{    
+                        window.location = window.location.href;        
+                        //alert(response.length);
+                        //window.location = window.location.href;
+                      }           
+                      //alert(prev_[0]['amount']);
+                    }
+                  });
+              }
+              setInterval('fightRefresh()', 3000);
+            </script> 
         <div class="right_col" role="main">          
             <div class="row">
               <div class="col-lg-8 col-md-12 col-sm-12">
@@ -197,6 +242,10 @@
                   <?php
                   }
                   ?>
+                  <div class="date-time">
+                    <div class="time" id="time"></div>
+                    <div class="date" id="date"></div>
+                    </div>
                 </div>
               </div>                                         
             </div>
@@ -206,26 +255,26 @@
           }else{
             ?>    
             <script>
-    function fightRefresh(){                                                
-        $.ajax({
-          url:'<?=base_url();?>index.php/pages/checkActiveFight',
-          type:'post',          
-          dataType:'json',
-          success: function(response){
-           // alert('Fight');
-            if(response.length > 0){
-                //alert(totalbet);
-              window.location = window.location.href;
-            }else{            
-              //alert(response.length);
-              //window.location = window.location.href;
-            }           
-            //alert(prev_[0]['amount']);
-          }
-        });
-        }
-        setInterval('fightRefresh()', 3000);
-      </script>        
+              function fightRefresh(){                                                
+                  $.ajax({
+                    url:'<?=base_url();?>index.php/pages/checkActiveFight',
+                    type:'post',          
+                    dataType:'json',
+                    success: function(response){
+                    // alert('Fight');
+                      if(response.length > 0){
+                          //alert(totalbet);
+                        window.location = window.location.href;
+                      }else{            
+                        //alert(response.length);
+                        //window.location = window.location.href;
+                      }           
+                      //alert(prev_[0]['amount']);
+                    }
+                  });
+              }
+              setInterval('fightRefresh()', 3000);
+            </script>        
             <div class="right_col" role="main">          
             <div class="row">
               <div class="col-lg-8 col-md-12 col-sm-12">
@@ -247,8 +296,11 @@
                     </ul> -->
                     <div class="clearfix"></div>
                   </div>                  
-                  <div align="center">                    
-                    <a href="<?=base_url('main');?>" class="btn btn-primary btn-lg">Refresh</a>                  
+                  <div>                    
+                    <div class="date-time">
+                    <div class="time" id="time"></div>
+                    <div class="date" id="date"></div>
+                    </div>
                   </div>
                   <?php
                   if($this->session->error){
@@ -265,4 +317,17 @@
             <?php
           }
           ?>
-        <!-- /page content -->         
+        <!-- /page content -->    
+         <script>
+          function updateDateTime() {
+            const now = new Date();
+            const dateOptions = { year: 'numeric', month: 'long', day: 'numeric' };
+            const formattedDate = now.toLocaleDateString(undefined, dateOptions);
+            document.getElementById('date').textContent = formattedDate;
+            const timeOptions = { hour: '2-digit', minute: '2-digit', second: '2-digit' };
+            const formattedTime = now.toLocaleTimeString(undefined, timeOptions);
+            document.getElementById('time').textContent = formattedTime;
+            }
+            updateDateTime();
+            setInterval(updateDateTime, 1000);
+         </script>     

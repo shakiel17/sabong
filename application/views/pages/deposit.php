@@ -1,9 +1,9 @@
 <!-- page content -->
 			<div class="right_col" role="main">
 				<div class="">
-					<div class="page-title">
+					<div class="col-lg-6 col-md-12 col-sm-12">
 						<div class="title_left">
-							<h3><a href="<?=base_url('main');?>"><i class="fa fa-home"></i></a> | <?=$title;?></h3>
+							<h4><a href="<?=base_url('main');?>"><i class="fa fa-home fa-2x"></i></a> | <?=$title;?></h4>
 						</div>
 
 						<!-- <div class="title_right">
@@ -33,11 +33,11 @@
 									<br />                                   
                                     <div class="form-group row">
 											<div class="col-lg-6 col-md-12 col-sm-12 text-center">
-												<button type="button" class="btn btn-primary bet_amount" onclick="betAmount('100')">100</button>
-												<button class="btn btn-primary bet_amount" type="button" onclick="betAmount('200')">200</button>
-                                                <button type="button" class="btn btn-primary bet_amount" onclick="betAmount('500')">500</button>
-												<button class="btn btn-primary bet_amount" type="button" onclick="betAmount('1000')">1000</button>
-                                                <button type="button" class="btn btn-primary bet_amount" onclick="betAmount('5000')">5000</button>																							
+												<button type="button" class="btn btn-primary btn-sm bet_amount" onclick="betAmount('100')">100</button>
+												<button class="btn btn-primary btn-sm bet_amount" type="button" onclick="betAmount('200')">200</button>
+                                                <button type="button" class="btn btn-primary btn-sm bet_amount" onclick="betAmount('500')">500</button>
+												<button class="btn btn-primary btn-sm bet_amount" type="button" onclick="betAmount('1000')">1000</button>
+                                                <button type="button" class="btn btn-primary btn-sm bet_amount" onclick="betAmount('5000')">5000</button>																							
 											</div>
 										</div>     
 									<form class="form-label-left input_mask" action="<?=base_url('save_deposit');?>" method="POST">                                        
