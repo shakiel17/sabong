@@ -486,7 +486,7 @@ $result=$this->db->query("UPDATE cash_out SET `status`='approved',loginuser='$us
             $acc=$check->row_array();
             $rembal=$acc['amount'];
 
-            $bq=$this->db->query("SELECT *,SUM(amount) as amount FROM fight_details WHERE fight_no='$id' AND customer_id='$cid' AND bet_side='$side' AND datearray='$date' GROUP BY bet_side");
+            $bq=$this->db->query("SELECT SUM(amount) as amount FROM fight_details WHERE fight_no='$id' AND customer_id='$cid' AND bet_side='$side' AND datearray='$date' GROUP BY bet_side");
             $bres=$bq->row_array();
 
             $betamount=$bres['amount'];
