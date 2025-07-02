@@ -74,6 +74,7 @@
     <script src="<?=base_url('design/assets/vendors/jszip/dist/jszip.min.js');?>"></script>
     <script src="<?=base_url('design/assets/vendors/pdfmake/build/pdfmake.min.js');?>"></script>
     <script src="<?=base_url('design/assets/vendors/pdfmake/build/vfs_fonts.js');?>"></script>
+    <script src="<?=base_url('design/assets/vendors/plugins/plugins.js');?>"></script>
     <script>
       function betAmount(amount){
         document.getElementById('bet_amount').value=amount;
