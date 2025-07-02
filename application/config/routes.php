@@ -50,6 +50,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 |		my-controller/my-method	-> my_controller/my_method
 */
 //========================Admin Route==============================
+$route['save_video'] = 'pages/save_video';
+$route['live_video'] = 'pages/live_video';
 $route['change_password'] = 'pages/change_password';
 $route['user_list'] = 'pages/user_list';
 $route['delete_user_account/(:any)'] = 'pages/delete_user_account/$1';

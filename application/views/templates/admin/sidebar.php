@@ -61,6 +61,7 @@
                     <ul class="nav child_menu">
                       <li><a href="<?=base_url('user_account');?>">User Account</a></li>
                       <li><a href="<?=base_url('user_list');?>">User List</a></li>                      
+                      <li><a href="<?=base_url('live_video');?>">Live Video</a></li>
                     </ul>
                   </li>                  
                 </ul>

@@ -569,6 +569,24 @@
             echo "</script>";
             
         }
+        public function live_video(){
+             $page = "live_video";
+            if(!file_exists(APPPATH.'views/pages/admin/'.$page.".php")){
+                show_404();
+            }
+            if($this->session->admin_login){                
+            }else{
+                redirect(base_url('admin'));
+            }
+            $data['title'] = "Live Video";
+            $data['item'] = $this->Sabong_model->getLiveVideo();
+            $this->load->view('templates/header');
+            $this->load->view('templates/admin/sidebar');
+            $this->load->view('templates/admin/navbar');
+            $this->load->view('pages/admin/'.$page,$data);
+            $this->load->view('templates/modal');
+            $this->load->view('templates/footer');
+        }
         //=====================================Admin Module==========================================
     }
 ?>
