@@ -142,6 +142,13 @@
               }
               setInterval('fightRefresh()', 3000);
             </script> 
+            <?php
+            if($video){
+              $link=$video['video_link'];
+            }else{
+              $link="";
+            }
+            ?>
         <div class="right_col" role="main">          
             <div class="row">
               <div class="col-lg-8 col-md-12 col-sm-12">
@@ -164,7 +171,7 @@
                     <div class="clearfix"></div>
                   </div>                  
                   <div class="">                                        
-                    <iframe width="100%" height="315" src="https://www.youtube.com/embed/Sbb8NlfRW0U?autoplay=1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+                    <iframe width="100%" height="315" src="<?=$link;?>?autoplay=1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin"></iframe>
                     <table width="100%" border="0" cellpadding="0" cellspacing="0">
                         <tr>
                             <td width="50%" align="center" class="bg-danger" style="color:white;"><h3 style="font-size:2em;">MERON</h3></td>

@@ -118,6 +118,11 @@
         let obj = document.getElementById('myPassword');
         obj.type = 'password';
       }
+
+      $('.editVideo').click(function(){
+        var id=$(this).data('id');        
+        document.getElementById('video_id').value = id;        
+      });
     </script>
   </body>
 </html>

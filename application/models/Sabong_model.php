@@ -146,7 +146,28 @@
             }
             
         }
-        
+        public function getLiveVideo(){
+            $result=$this->db->query("SELECT * FROM live_video");
+            if($result->num_rows()>0){
+                return $result->row_array();
+            }else{
+                return false;
+            }
+        }
+        public function save_video(){
+            $id=$this->input->post('id');
+            $link=$this->input->post('link');
+            if($id==""){
+                $result=$this->db->query("INSERT INTO live_video(video_link) VALUES('$link')");
+            }else{
+                $result=$this->db->query("UPDATE live_video SET video_link='$link' WHERE id='$id'");
+            }
+            if($result){
+                return true;
+            }else{
+                return false;
+            }
+        }
         //==================================End of Getting Data Model=================================================
         
 //====================================================================================================================================================================

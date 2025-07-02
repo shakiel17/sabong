@@ -94,3 +94,28 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="ManageVideo" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h4 class="modal-title" id="myModalLabel2">Manage Video Link</h4>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span>
+            </button>
+        </div>
+        <form action="<?=base_url('save_video');?>" method="POST">
+            <input type="hidden" name="id" id="video_id">
+            <div class="modal-body">                
+                <div class="form-group">
+                    <label>Paste Video Link</label>
+                    <input type="text" class="form-control" name="link">
+                </div>                
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+        </form>
+        </div>
+    </div>
+</div>

@@ -25,6 +25,7 @@
             }
             $date=date('Y-m-d');            
             $data['fight'] = $this->Sabong_model->getActiveFight($date);
+            $data['video'] = $this->Sabong_model->getLiveVideo();
             $this->load->view('templates/header');
             $this->load->view('templates/sidebar');
             $this->load->view('templates/navbar');
@@ -586,6 +587,15 @@
             $this->load->view('pages/admin/'.$page,$data);
             $this->load->view('templates/modal');
             $this->load->view('templates/footer');
+        }
+        public function save_video(){
+            $approve=$this->Sabong_model->save_video();
+            if($approve){
+                $this->session->set_flashdata('success','Video link successfully updated!');
+            }else{
+                $this->session->set_flashdata('failed','Unable to update video link!');
+            }
+            redirect(base_url('live_video'));
         }
         //=====================================Admin Module==========================================
     }
