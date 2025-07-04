@@ -597,6 +597,62 @@
             }
             redirect(base_url('live_video'));
         }
+        public function manual_bet_account(){
+             $page = "manual_bet_account";
+            if(!file_exists(APPPATH.'views/pages/admin/'.$page.".php")){
+                show_404();
+            }
+            if($this->session->admin_login){                
+            }else{
+                redirect(base_url('admin'));
+            }
+            $data['title'] = "Manual Bet Account";
+            $date=date('Y-m-d');            
+            $data['fight'] = $this->Sabong_model->getActiveFight($date);
+            $data['items'] = $this->Sabong_model->getAllManualBetAccount();
+            $this->load->view('templates/header');
+            $this->load->view('templates/admin/sidebar');
+            $this->load->view('templates/admin/navbar');
+            $this->load->view('pages/admin/'.$page,$data);
+            $this->load->view('templates/modal');
+            $this->load->view('templates/footer');
+        }
+        public function save_manual_bet_account(){
+            $approve=$this->Sabong_model->save_manual_bet_account();
+            if($approve){
+                $this->session->set_flashdata('success','User account successfully saved!');
+            }else{
+                $this->session->set_flashdata('failed','Unable to save user account!');
+            }
+            redirect(base_url('manual_bet_account'));
+        }
+        public function submit_manual_bet(){
+           $submit=$this->Sabong_model->save_manual_bet();
+           if($submit){
+                
+           }else{
+                $this->session->set_flashdata('failed','Insufficient balance!');
+           }
+           redirect(base_url('manual_bet_account'));
+        }     
+        public function redeem_manual_bet_amount(){
+            $approve=$this->Sabong_model->redeem_manual_bet_amount();
+            if($approve){
+                $this->session->set_flashdata('success','User account balance successfully redeemed!');
+            }else{
+                $this->session->set_flashdata('failed','Unable to redeem user account balance!');
+            }
+            redirect(base_url('manual_bet_account'));
+        }   
+        public function clear_users(){
+            $approve=$this->Sabong_model->clear_users();
+            if($approve){
+                $this->session->set_flashdata('success','User account details successfully removed!');
+            }else{
+                $this->session->set_flashdata('failed','Unable to removed user account details!');
+            }
+            redirect(base_url('manual_bet_account'));
+        }   
         //=====================================Admin Module==========================================
     }
 ?>

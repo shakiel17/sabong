@@ -49,9 +49,10 @@
                   <li><a><i class="fa fa-money"></i> Cash Flow <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
                       <li><a href="<?=base_url('manage_deposit');?>">Deposit Requests</a></li>
-                      <li><a href="<?=base_url('manage_withdrawal');?>">Withdrawal Requests</a></li>                      
+                      <li><a href="<?=base_url('manage_withdrawal');?>">Withdrawal Requests</a></li>
+                      <li><a href="<?=base_url('manual_bet_account');?>">Manual Bet Account</a></li>
                     </ul>
-                  </li>
+                  </li>                  
                   <li <?=$reports;?>><a><i class="fa fa-file-text-o"></i> Reports <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
                       <li><a href="<?=base_url('income');?>">Income</a></li>                      

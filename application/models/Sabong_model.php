@@ -168,6 +168,67 @@
                 return false;
             }
         }
+        public function getAllManualBetAccount(){
+            $result=$this->db->query("SELECT * FROM manual_bet_account");
+            return $result->result_array();
+        }
+        public function save_manual_bet_account(){
+            $user=$this->session->fullname;
+            $id=$this->input->post('id');
+            $name=$this->input->post('fullname');
+            $amount=$this->input->post('amount');
+            $date=date('Y-m-d');
+            $time=date('H:i:s');
+            if($id==""){
+                $cid="MB".date('YmdHis');
+                $result=$this->db->query("INSERT INTO manual_bet_account(customer_id,fullname,amount,added_by,datearray,timearray) VALUES('$cid','$name','$amount','$user','$date','$time')");
+            }else{
+                $result=$this->db->query("UPDATE manual_bet_account SET fullname='$name',amount='$amount',updated_by='$user',date_updated='$date',time_updated='$time' WHERE id='$id'");
+            }
+            if($result){
+                return true;
+            }else{
+                return false;
+            }
+            
+        }
+        public function redeem_manual_bet_amount(){
+            $user=$this->session->fullname;
+            $id=$this->input->post('customer_id');            
+            $amount=$this->input->post('amount');
+            $date=date('Y-m-d');
+            $time=date('H:i:s');
+            $prof=$this->db->query("SELECT * FROM manual_bet_account WHERE customer_id='$id'");
+            $row=$prof->row_array();
+            $rembal=$row['amount'];
+            $newbal=0;
+            if($rembal >= $amount){
+                $newbal=$rembal-$amount;
+                $result=$this->db->query("INSERT INTO manual_bet_claim(customer_id,amount,datearray,timearray,approved_by) VALUES('$id','$amount','$date','$time','$user')");                
+                if($result){
+                    $this->db->query("UPDATE manual_bet_account SET amount='$newbal' WHERE customer_id='$id'");
+                }                
+            }
+            if($result){                
+                return true;
+            }else{
+                return false;
+            }
+            
+        }
+        public function clear_users(){
+            $check=$this->db->query("SELECT * FROM manual_bet_account WHERE amount > 0");
+            if($check->num_rows()>0){
+                $result=$this->db->query("DELETE FROM manual_bet_account WHERE amount='0'");
+            }else{
+                $result=$this->db->query("TRUNCATE manual_bet_account");
+            }
+            if($result){
+                return true;
+            }else{
+                return false;
+            }
+        }
         //==================================End of Getting Data Model=================================================
         
 //====================================================================================================================================================================
@@ -377,7 +438,7 @@ $result=$this->db->query("UPDATE cash_out SET `status`='approved',loginuser='$us
         }
         public function check_fight(){
             $date=date('Y-m-d');
-            $result=$this->db->query("SELECT * FROM fight WHERE `status`='open' OR `status`='close' AND datearray='$date'");
+            $result=$this->db->query("SELECT * FROM fight WHERE (`status`='open' OR `status`='close') AND datearray='$date'");
             if($result->num_rows() > 0){
                 return true;
             }else{
@@ -489,11 +550,20 @@ $result=$this->db->query("UPDATE cash_out SET `status`='approved',loginuser='$us
                     $c_id=$item['customer_id'];
                     $amount=$item['amount'];
                     $prof=$this->db->query("SELECT * FROM customer_account WHERE customer_id='$c_id'");
-                    $row=$prof->row_array();
-                    $prev_bal=$row['amount'];
-                    $winamount=$amount*$odds;
-                    $new_bal=$prev_bal+$winamount;
-                    $this->db->query("UPDATE customer_account SET amount='$new_bal' WHERE customer_id='$c_id'");
+                    if($prof->num_rows() > 0){
+                        $row=$prof->row_array();
+                        $prev_bal=$row['amount'];
+                        $winamount=$amount*$odds;
+                        $new_bal=$prev_bal+$winamount;
+                        $this->db->query("UPDATE customer_account SET amount='$new_bal' WHERE customer_id='$c_id'");
+                    }else{
+                        $prof=$this->db->query("SELECT * FROM manual_bet_account WHERE customer_id='$c_id'");
+                        $row=$prof->row_array();
+                        $prev_bal=$row['amount'];
+                        $winamount=$amount*$odds;
+                        $new_bal=$prev_bal+$winamount;
+                        $this->db->query("UPDATE manual_bet_account SET amount='$new_bal' WHERE customer_id='$c_id'");
+                    }
                 }
             }
             $this->db->query("UPDATE fight SET `status`='done' WHERE fight_no='$fight_no' AND datearray='$date'");
@@ -542,6 +612,67 @@ $result=$this->db->query("UPDATE cash_out SET `status`='approved',loginuser='$us
             $this->db->query("UPDATE fight SET odds_meron='$odds_meron',odds_wala='$odds_wala' WHERE fight_no='$id' AND datearray='$date'");
             if($rembal >= $amount){
                 return true;
+            }else{
+                return false;
+            }
+
+        }
+
+        public function save_manual_bet(){
+            $btnBet=$this->input->post('btnBet');
+            $amount=$this->input->post('amount');
+            $fight_no=$this->input->post('fight_no');
+            $date=date('Y-m-d');
+            $time=date('H:i:s');
+            $customer_id=$this->input->post('customer_id');
+
+            if($btnBet=="Bet Meron"){
+                $side="meron";
+            }
+
+            if($btnBet=="Bet Wala"){
+                $side="wala";
+            }
+            $check=$this->db->query("SELECT * FROM manual_bet_account WHERE customer_id='$customer_id'");
+            $acc=$check->row_array();
+
+            $rembal=$acc['amount'];
+            if($rembal >= $amount){
+                if($amount > 0){
+                    $this->db->query("INSERT INTO fight_details(`fight_no`,`customer_id`,`amount`,`bet_side`,`datearray`,`timearray`) VALUES('$fight_no','$customer_id','$amount','$side','$date','$time')");
+                    $newbal=$rembal-$amount;
+                    $this->db->query("UPDATE manual_bet_account SET amount='$newbal' WHERE customer_id='$customer_id'");
+                }
+            }            
+
+            $query=$this->Sabong_model->getFightDetailsBySide('meron',$fight_no);
+            $meron=0;
+            foreach($query as $row){
+                $meron += $row['amount'];
+            }
+            $query=$this->Sabong_model->getFightDetailsBySide('wala',$fight_no);
+            $wala=0;
+            foreach($query as $row){
+                $wala += $row['amount'];
+            }
+
+            $totalbet=$meron+$wala;
+            $odds_meron=0;
+            if($meron > 0){
+                $odds_meron=($totalbet/$meron)*0.85;
+            }
+            $odds_wala=0;
+            if($wala > 0){
+                $odds_wala=($totalbet/$wala)*0.85;
+            }
+
+            $this->db->query("UPDATE fight SET odds_meron='$odds_meron',odds_wala='$odds_wala' WHERE fight_no='$fight_no' AND datearray='$date'");
+            if($rembal >= $amount){
+                if($amount > 0){                
+                return true;    
+                }else{
+                    return false;
+                }            
             }else{
                 return false;
             }

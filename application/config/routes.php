@@ -50,6 +50,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 |		my-controller/my-method	-> my_controller/my_method
 */
 //========================Admin Route==============================
+$route['clear_users'] = 'pages/clear_users';
+$route['redeem_manual_bet_amount'] = 'pages/redeem_manual_bet_amount';
+$route['submit_manual_bet'] = 'pages/submit_manual_bet';
+$route['manual_bet_amount'] = 'pages/manual_bet_amount';
+$route['save_manual_bet_account'] = 'pages/save_manual_bet_account';
+$route['manual_bet_account'] = 'pages/manual_bet_account';
 $route['save_video'] = 'pages/save_video';
 $route['live_video'] = 'pages/live_video';
 $route['change_password'] = 'pages/change_password';

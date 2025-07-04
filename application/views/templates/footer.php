@@ -123,6 +123,36 @@
         var id=$(this).data('id');        
         document.getElementById('video_id').value = id;        
       });
+
+      $('.addManualBetAccount').click(function(){
+        document.getElementById('manual_id').value = '';
+        document.getElementById('manual_name').value = '';
+        document.getElementById('manual_amount').value = '';
+      });
+      $('.editManualBetAccount').click(function(){
+        var data=$(this).data('id');
+        var id=data.split('_');
+        document.getElementById('manual_id').value = id[0];
+        document.getElementById('manual_name').value = id[1];
+        document.getElementById('manual_amount').value = id[2];
+      });
+      $('.betAmount').click(function(){
+        var data=$(this).data('id');
+        var id=data.split('_');
+        document.getElementById('customer_bet_id').value = id[0];
+        document.getElementById('customer_bet_amount').value = id[1]; 
+        if(id[1] == 0){
+          document.getElementById('btnBetMeron').disabled = true;
+          document.getElementById('btnBetWala').disabled = true;
+        }       
+      });
+
+      $('.claimAmount').click(function(){
+        var data=$(this).data('id');
+        var id=data.split('_');
+        document.getElementById('redeem_id').value = id[0];
+        document.getElementById('redeem_amount').value = id[1];         
+      });
     </script>
   </body>
 </html>
